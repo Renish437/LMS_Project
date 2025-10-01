@@ -27,7 +27,8 @@
   --bs-gray-700: #949da6;
   --bs-gray-800: #77838f;
   --bs-gray-900: #2f2d51;
-  --bs-primary: #090761;
+  /* --bs-primary: #090761; */
+   --bs-primary: #370761;
   --bs-secondary: #949da6;
   --bs-primary-desat: #6c8aec;
   --bs-black: #161c2d;
@@ -51,7 +52,8 @@
   --bs-tropaz: #2d4f93;
   --bs-roman: #e0685c;
   --bs-tangerine: #ff9574;
-  --bs-gigas: #4e35a3;
+  /* --bs-gigas: #4e35a3; */
+  --bs-gigas: #3f268f;
   --bs-lavender: #ffebf1;
   --bs-sienna: #e7643e;
   --bs-coral: #fe805d;
@@ -11855,8 +11857,10 @@ form.woocommerce-checkout .place-order .placeholder.button::before {
   box-shadow: 0 0.125rem 0.25rem rgba(22, 28, 45, 0.075) !important;
 }
 .shadow-lg {
-  box-shadow: 0 1.5rem 4rem rgba(140, 152, 164, 0.1) !important;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+              0 4px 6px -4px rgba(0, 0, 0, 0.1);
 }
+
 .shadow-none {
   box-shadow: none !important;
 }
@@ -25175,7 +25179,7 @@ form.woocommerce-checkout
 }
 .tab-nav-1 .active {
   color: #fff !important;
-  background-color: #2f2d51;
+  background-color: var(--bs-gigas);
 }
 .tab-nav-1 .active:focus,
 .tab-nav-1 .active:hover {
@@ -28919,6 +28923,34 @@ ins {
     );
   }
 }
+.overlay-custom-left-purple::before {
+  background: -webkit-gradient(
+      linear,
+      left bottom,
+      left top,
+      from(rgba(78, 53, 163, 0.6)),   /* #4E35A3 with opacity */
+      to(rgba(78, 53, 163, 0.6))
+    ),
+    -webkit-gradient(
+      linear,
+      right top,
+      left top,
+      color-stop(17.76%, #4E35A3),    /* solid purple */
+      to(rgba(255, 255, 255, 0))
+    );
+
+  background: linear-gradient(
+      0deg,
+      rgba(78, 53, 163, 0.6),         /* vertical purple overlay */
+      rgba(78, 53, 163, 0.6)
+    ),
+    linear-gradient(
+      270deg,
+      #4E35A3 17.76%,                 /* strong purple edge */
+      rgba(255, 255, 255, 0) 100%     /* fade to transparent */
+    );
+}
+
 .overlay-10::before {
   opacity: 0.1;
 }
@@ -29106,10 +29138,18 @@ ins {
 }
 @media (min-width: 768px) {
   .center-md-y {
-    -webkit-transform: translate(0, 50%);
-    transform: translate(0, 50%);
+    -webkit-transform: translate(0, 30%);
+    transform: translate(0, 30%);
+  }
+   .center-sm-y {
+    -webkit-transform: translate(0, 15%);
+    transform: translate(0, 15%);
   }
 }
+   .center-sm-y {
+    -webkit-transform: translate(0, 15%);
+    transform: translate(0, 15%);
+  }
 a .hover-visible {
   opacity: 0;
   visibility: hidden;
