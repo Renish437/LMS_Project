@@ -39,7 +39,7 @@
   --bs-success: #def2d7;
   --bs-info: #cde9f6;
   --bs-warning: #f7f3d7;
-  --bs-danger: #ecc8c5;
+  --bs-danger: #e73323;
   --bs-light: #f7f9fb;
   --bs-orange: #ffc78b;
   --bs-blue: #196ecd;
@@ -24289,6 +24289,9 @@ form.woocommerce-checkout .form-row .input-text {
   .container-wd {
     max-width: 1445px;
   }
+  .container-g {
+    max-width: 500px;
+  }
 }
 .img-cover {
   width: 100vw;
@@ -35147,4 +35150,86 @@ body.compensate-for-scrollbar {
 .slect-rating > input:checked ~ label:hover ~ label,
 .slect-rating > label:hover ~ input:checked ~ label {
   color: #ffbb72;
+}
+/* Container to center alerts */
+.alert-container {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 400px;
+  width: 100%;
+}
+
+/* Alert Box */
+.alert-box {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  border-radius: 8px;
+  color: white;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  position: relative;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  animation: slideDown 0.5s ease;
+}
+
+/* Success / Error Colors */
+.alert-success {
+  background-color: #3BB143; /* green */
+}
+.alert-warning {
+  background-color: #eac50e; /* green */
+}
+
+.alert-error {
+  background-color: #f44336; /* red */
+}
+
+
+/* Icon */
+.alert-icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 12px;
+  flex-shrink: 0;
+}
+
+/* Message Text */
+.alert-text {
+  flex-grow: 1;
+}
+
+/* Close Button */
+.alert-close {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 12px;
+}
+
+.alert-close svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Slide Down Animation */
+@keyframes slideDown {
+  0% { opacity: 0; transform: translateY(-20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Optional: auto-hide after 6 seconds */
+.alert-box {
+  animation: slideDown 0.5s ease, fadeOut 1s ease 5s forwards;
+}
+
+@keyframes fadeOut {
+  to { opacity: 0; transform: translateY(-20px); height: 0; margin: 0; padding: 0; }
 }

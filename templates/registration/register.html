@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+
+<div class="container py-5">
+    <div class="row  align-items-center">
+        <div class="col-md-6 mx-auto">
+            <div class="card shadow-lg p-4">
+    
+      <h3 class="mb-4">Sign Up and Start Learning!</h3>
+       
+      <form class="mb-4" method="POST" action="{% url 'register' %}">
+        {% csrf_token %}
+        <!-- Username -->
+        <div class="form-group mb-3">
+          <label for="signupUsername">Username</label>
+          <input type="text" name="username" class="form-control" id="signupUsername"  value="{{ request.POST.username|default:'' }}" placeholder="John">
+        </div>
+
+        <!-- Email -->
+        <div class="form-group mb-3">
+          <label for="signupEmail">Email</label>
+          <input type="email" name="email" class="form-control" id="signupEmail"  value="{{ request.POST.email|default:'' }}" placeholder="johndoe@creativelayers.com">
+        </div>
+
+        <!-- Password -->
+        <div class="form-group mb-3">
+          <label for="signupPassword">Password</label>
+          <input type="password" name="password" class="form-control" id="signupPassword" placeholder="**********">
+        </div>
+
+        <!-- Submit -->
+        <button class="btn btn-primary w-100" type="submit">SIGN UP</button>
+      </form>
+
+      <p class="text-center mb-0">
+        Already have an account? <a href="{%url 'login'%}">Log in</a>
+      </p>
+    </div>
+    </div>
+    </div>
+  </div>
+{% endblock content %}

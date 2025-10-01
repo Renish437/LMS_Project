@@ -1,0 +1,26 @@
+
+  {% if messages %}
+    <div class="alert-container">
+      {% for message in messages %}
+        <div class="alert-box {% if message.tags == 'error' %}alert-error{%elif message.tags == 'warning' %}alert-warning{% else %}alert-success{% endif %}" role="alert">
+          
+          <!-- Icon -->
+          <svg class="alert-icon" viewBox="0 0 512 512">
+            <path d="M315.27,33,96,304H224L192.49,477.23a2.36,2.36,0,0,0,2.33,2.77h0a2.36,2.36,0,0,0,1.89-.95L416,208H288L319.66,34.75A2.45,2.45,0,0,0,317.22,32h0A2.42,2.42,0,0,0,315.27,33Z" style="fill:none;stroke:#ffffff;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px" fill="white"></path>
+          </svg>
+
+          <!-- Message Text -->
+          <div class="alert-text">{{ message }}</div>
+
+          <!-- Close Button -->
+          <div class="alert-close" onclick="this.parentElement.style.display='none';">
+            <svg fill="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" stroke="currentColor">
+              <path d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </div>
+
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
