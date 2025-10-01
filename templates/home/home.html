@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<section>
+
+
+    <!-- HERO
+    ================================================== -->
+   {% include './includes/hero.html' %}
+
+    <!-- FEATURED PRODUCT
+    ================================================== -->
+     {% include './includes/featured_course.html' %}
+
+    <!-- CATEGORIES
+    ================================================== -->
+     {% include './includes/categories.html' %}
+    <!-- EVENTS
+    ================================================== -->
+    {% include './includes/events.html' %}
+
+    <!-- BLOG
+    ================================================== -->
+  {% include './includes/blog.html' %}
+
+    <!-- INSTRUCTORS
+    ================================================== -->
+   {% include './includes/instructors.html' %}
+
+    <!-- FEATURES GENERAL
+    ================================================== -->
+     {% include './includes/features_general.html' %}
+   
+
+    <!-- CALL ACTION
+    ================================================== -->
+   {% include './includes/cta.html' %}
+</section>
+
+{% endblock content %}
