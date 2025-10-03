@@ -39,8 +39,16 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'home',
     'course',
-    'app'
+    'app',
+      'crispy_forms',
+    'crispy_bootstrap5',
 ]
+  
+
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -136,3 +144,12 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 LOGIN_URL = 'login'   # the name of your custom login route
 LOGOUT_REDIRECT_URL = 'login'  # where to go after logout
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+EMAIL_HOST = 'smtp.gmail.com'   # ✅ fixed typo
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = '437renish@gmail.com'
+EMAIL_HOST_PASSWORD = 'tvxhynvakuoqgrdz'  # your Gmail App Password
