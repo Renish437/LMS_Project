@@ -1,7 +1,16 @@
+from django.contrib.auth.decorators import login_required
+from .forms import UserUpdateForm
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import logout,authenticate, login as auth_login
+from django.contrib.auth import update_session_auth_hash
+
+from django.contrib.auth.forms import PasswordChangeForm as DjangoPasswordChangeForm
+
+
+from .forms import UserUpdateForm, PasswordChangeForm
+
 
 def register(request):
     # Initialize context with empty defaults
@@ -74,6 +83,41 @@ def login(request):
 
     return render(request, 'registration/login.html', context)
 
+# @login_required
+# def profile(request):
+#     return render(request, 'registration/profile.html', {'user': request.user})
+
+
+@login_required
+def profile_update(request):
+    active_tab = 'info'
+    user_form = UserUpdateForm(instance=request.user)
+    password_form = DjangoPasswordChangeForm(user=request.user)
+
+    if request.method == 'POST':
+        if 'update_info' in request.POST:
+            active_tab = 'info'
+            user_form = UserUpdateForm(request.POST, instance=request.user)
+            if user_form.is_valid():
+                user_form.save()
+                messages.success(request, "Profile updated successfully!")
+                return redirect('profile_update')
+        elif 'update_password' in request.POST:
+            active_tab = 'password'
+            password_form = DjangoPasswordChangeForm(user=request.user, data=request.POST)
+            if password_form.is_valid():
+                user = password_form.save()
+                update_session_auth_hash(request, user)
+                messages.success(request, "Password changed successfully!")
+                return redirect('profile_update')
+            else:
+                messages.error(request, "Please correct the errors below.")
+
+    return render(request, 'registration/profile.html', {
+        'user_form': user_form,
+        'password_form': password_form,
+        'active_tab': active_tab,
+    })
 
 
 def logout_user(request):
