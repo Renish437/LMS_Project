@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     'accounts',
     'crispy_forms',
     'crispy_bootstrap5',
+       'ckeditor',
+    'ckeditor_uploader',
 ]
   
 
@@ -157,3 +159,21 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = EMAIL_HOST_USER or ""
 EMAIL_HOST_PASSWORD = EMAIL_HOST_PASSWORD or ""  # your Gmail App Password
+
+
+CKEDITOR_UPLOAD_PATH = "uploads/"  # folder inside MEDIA_ROOT
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'full',
+        'height': 500,
+        'width': '100%',
+        'toolbar_Custom': [
+            ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript'],
+            ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent'],
+            ['Link', 'Unlink', 'Image', 'Table'],
+            ['Undo', 'Redo'], 
+            ['Source']
+        ],
+    },
+}

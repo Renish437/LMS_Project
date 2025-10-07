@@ -8,3 +8,8 @@ class CategoryAdmin(admin.ModelAdmin):
     list_display = ('id','name','slug','is_active')
 
 admin.site.register(Category, CategoryAdmin)
+class CourseAdmin(admin.ModelAdmin):
+    prepopulated_fields = {"slug":("title",)}
+    list_display = ('id','title','slug','status')
+
+admin.site.register(Course, CourseAdmin)
