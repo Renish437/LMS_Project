@@ -32,7 +32,7 @@
           <a href="course-list-v6.html" class="card bg-white shadow rounded-lg p-md-5 p-3 h-210p text-center lift">
             <div class="mt-7 text-gigas display-4">
               <div class="icon-container">
-                {{ category.icon|safe }}
+              {{ category.icon|default:"<i class='bi bi-code-slash'></i>"|safe }}
               </div>
             </div>
             <div class="card-footer px-0 pb-0 pt-4">
@@ -47,8 +47,8 @@
 </section>
 
 <!-- Flickity CSS & JS -->
-<link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css">
-<script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
+<!-- <link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css">
+<script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script> -->
 
 <!-- Optional Flickity Styling -->
 <style>

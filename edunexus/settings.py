@@ -76,7 +76,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'app.context_processors.course_categories'
+                'app.context_processors.course_categories',
+                'app.context_processors.courses'
               
                 
             ],
@@ -154,7 +155,7 @@ LOGOUT_REDIRECT_URL = 'login'  # where to go after logout
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
-EMAIL_HOST = 'smtp.gmail.com'   # ✅ fixed typo
+EMAIL_HOST = 'smtp.gmail.com'  
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = EMAIL_HOST_USER or ""
