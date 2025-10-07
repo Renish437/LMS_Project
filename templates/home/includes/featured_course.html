@@ -26,29 +26,23 @@
               >
                 All Categories
               </a>
-              <a
+             
+             {% for category in course_categories|slice:"6:" %}
+               <a
                 class="btn-sm btn-pill me-1 mb-1 text-dark fw-medium px-6"
                 id="pills-art-tab"
                 data-bs-toggle="tab"
-                href="#pills-art"
+                href="#pills-{{category.id}}"
                 role="tab"
                 aria-controls="pills-art"
                 aria-selected="false"
               >
-                Art
+               {{category.name}}
               </a>
+             {% endfor %}
+              
 
-              <a
-                class="btn-sm btn-pill me-1 mb-1 text-dark fw-medium px-6"
-                id="pills-software-dev-tab"
-                data-bs-toggle="tab"
-                href="#pills-software-dev"
-                role="tab"
-                aria-controls="pills-software-dev"
-                aria-selected="false"
-              >
-                Software Development
-              </a>
+             
             </div>
           </div>
         </div>
@@ -962,7 +956,7 @@
 
           <div
             class="tab-pane fade"
-            id="pills-art"
+            id="pills-{{category.id}}"
             role="tabpanel"
             aria-labelledby="pills-art-tab"
           >
