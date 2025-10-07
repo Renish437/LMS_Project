@@ -65,12 +65,7 @@ class Course(models.Model):
     def __str__(self):
         return self.title
     
-    def save(self, *args, **kwargs):
-        # if this course is set to featured_in_sliders=True
-        if self.featured_in_sliders:
-            # unfeature all other courses
-            Course.objects.exclude(id=self.id).update(featured_in_sliders=False)
-        super().save(*args, **kwargs)
+
     
 
 
