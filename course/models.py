@@ -26,23 +26,25 @@ class Category(models.Model):
     
 class Course(models.Model):
     STATUS = (
-        ('Published','Published'),
-        ('Draft','Draft')
+        ('Published', 'Published'),
+        ('Draft', 'Draft'),
     )
+
     title = models.CharField(max_length=500)
-    slug = models.SlugField(null=True)
-    author = models.ForeignKey(Author,on_delete=models.CASCADE,null=True)
-    category = models.ManyToManyField(Category)
+    slug = models.SlugField(null=True, blank=True)
+    author = models.ForeignKey(Author, on_delete=models.CASCADE, null=True)
+    category = models.ManyToManyField('Category')
     description = RichTextUploadingField()
-    price = models.IntegerField(null=True,default=0)
-    discounted_amount = models.IntegerField(null=True,default=0)
-    discount = models.IntegerField(null=True,default=0)
-    status = models.CharField(choices=STATUS,max_length=100,null=True)
-    featured_image = models.ImageField(upload_to="uploads/courses/featured-images",null=True)
-    featured_video = models.CharField(max_length=500,null=True)
-    review_count = models.IntegerField(null=True,blank=True)
-    lesson_count = models.IntegerField(null=True,blank=True)
-    
+    price = models.IntegerField(null=True, default=0)
+    discounted_amount = models.IntegerField(null=True, default=0)
+    discount = models.IntegerField(null=True, default=0)
+    status = models.CharField(choices=STATUS, max_length=100, null=True)
+    featured_image = models.ImageField(upload_to="uploads/courses/featured-images", null=True, blank=True)
+    featured_video = models.CharField(max_length=500, null=True, blank=True)
+    review_count = models.IntegerField(null=True, blank=True)
+    lesson_count = models.IntegerField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     rating = models.DecimalField(
         max_digits=2,             
         decimal_places=1,          
@@ -62,6 +64,13 @@ class Course(models.Model):
         verbose_name_plural = 'Courses'
     def __str__(self):
         return self.title
+    
+    def save(self, *args, **kwargs):
+        # if this course is set to featured_in_sliders=True
+        if self.featured_in_sliders:
+            # unfeature all other courses
+            Course.objects.exclude(id=self.id).update(featured_in_sliders=False)
+        super().save(*args, **kwargs)
     
 
 
