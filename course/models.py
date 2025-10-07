@@ -9,6 +9,7 @@ class Category(models.Model):
     name = models.CharField(max_length=200)
     slug = models.SlugField(max_length=200)
     icon = models.TextField(null=True)
+    parent_category = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, blank=True, related_name='sub_categories')
     is_active = models.BooleanField(default=True)
     
     
@@ -41,9 +42,10 @@ class Course(models.Model):
     featured_video = models.CharField(max_length=500,null=True)
     review_count = models.IntegerField(null=True,blank=True)
     lesson_count = models.IntegerField(null=True,blank=True)
+    
     rating = models.DecimalField(
-        max_digits=2,              # total digits (e.g. '5.0' = 2 digits)
-        decimal_places=1,          # one digit after decimal
+        max_digits=2,             
+        decimal_places=1,          
         null=True,
         blank=True,
         validators=[
