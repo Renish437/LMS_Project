@@ -1,0 +1,31 @@
+{% if courses_page %}
+    <nav class="mb-11" aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            <!-- Previous -->
+            <li class="page-item {% if not courses_page.has_previous %}disabled{% endif %}">
+                <a class="page-link ajax-page" href="#" data-page="{{ courses_page.previous_page_number }}" aria-label="Previous">
+                    <span aria-hidden="true"><i class="fas fa-arrow-left"></i></span>
+                </a>
+            </li>
+
+            <!-- Page Numbers (show 5 around current for large sets) -->
+            {% for num in courses_page.paginator.page_range %}
+                {% if num|add:'-2' <= courses_page.number and num|add:'2' >= courses_page.number or num == 1 or num == courses_page.paginator.num_pages %}
+                    <li class="page-item {% if courses_page.number == num %}active{% endif %}">
+                        <a class="page-link ajax-page" href="#" data-page="{{ num }}">{{ num }}</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+
+            <!-- Next -->
+            <li class="page-item {% if not courses_page.has_next %}disabled{% endif %}">
+                <a class="page-link ajax-page" href="#" data-page="{{ courses_page.next_page_number }}" aria-label="Next">
+                    <span aria-hidden="true"><i class="fas fa-arrow-right"></i></span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+{% else %}
+    <p class="text-muted">No pagination courses.</p>
+{% endif %}
+

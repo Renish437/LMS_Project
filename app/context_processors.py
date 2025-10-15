@@ -1,9 +1,12 @@
 from course.models import *
+from accounts.models import *
 def course_categories(request):
     course_categories = Category.objects.filter(is_active=True)
     return dict(course_categories=course_categories)
 def courses(request):
+    
     courses = Course.objects.filter(status="Published")
+    
     for course in courses:
         try:
             rating = float(course.rating) if course.rating else 0
@@ -13,5 +16,12 @@ def courses(request):
             
     return dict(courses=courses)
 
+def instructors(request):
+    instructors = Author.objects.all()
+    return dict(instructors=instructors)
 
+
+def levels(request):
+    levels = Level.objects.all()
+    return dict(levels=levels)
     

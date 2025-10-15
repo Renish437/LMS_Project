@@ -13,3 +13,4 @@ class CourseAdmin(admin.ModelAdmin):
     list_display = ('id','title','slug','status')
 
 admin.site.register(Course, CourseAdmin)
+admin.site.register(Level)

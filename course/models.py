@@ -21,13 +21,24 @@ class Category(models.Model):
     
     def __str__(self):
         return self.name
+
+class Level(models.Model):
+    name = models.CharField(max_length=100)
     
+    def __str__(self):
+        return self.name 
+
 
     
 class Course(models.Model):
     STATUS = (
         ('Published', 'Published'),
         ('Draft', 'Draft'),
+    )
+    LEVELS = (
+        ("Beginner","Beginner"),
+        ("Intermediate","Intermediate"),
+        ("Advanced","Advanced"),
     )
 
     title = models.CharField(max_length=500)
@@ -39,6 +50,7 @@ class Course(models.Model):
     discounted_amount = models.IntegerField(null=True, default=0)
     discount = models.IntegerField(null=True, default=0)
     status = models.CharField(choices=STATUS, max_length=100, null=True)
+    level = models.ForeignKey(Level,on_delete=models.CASCADE,null=True,related_name="course_level")
     featured_image = models.ImageField(upload_to="uploads/courses/featured-images", null=True, blank=True)
     featured_video = models.CharField(max_length=500, null=True, blank=True)
     review_count = models.IntegerField(null=True, blank=True)

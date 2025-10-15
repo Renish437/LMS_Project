@@ -77,7 +77,9 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'app.context_processors.course_categories',
-                'app.context_processors.courses'
+                'app.context_processors.courses',
+                'app.context_processors.instructors',
+                'app.context_processors.levels',
               
                 
             ],

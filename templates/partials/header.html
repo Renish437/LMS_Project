@@ -45,7 +45,8 @@
     {% for category in course_categories %}
         {% if not category.parent_category %}
             <li class="dropdown-item {% if category.sub_categories.all %}dropright{% endif %}">
-                <a class="dropdown-link {% if category.sub_categories.all %}dropdown-toggle{% endif %}" {% if category.sub_categories.all %}data-bs-toggle="dropdown"{% endif %} href="#">
+                <a class="dropdown-link {% if category.sub_categories.all %}dropdown-toggle{% endif %}" {% if category.sub_categories.all %}data-bs-toggle="dropdown"{% endif %} 
+                href="{%url 'course:course-detail' category.slug %}">
                     <div class="me-4 d-flex text-white icon-xs gap-md-4">
                         {% if category.icon %}
                             {{ category.icon|safe }}
@@ -62,7 +63,7 @@
                     <div class="dropdown-menu ps-4 top-0 pe-0 py-0 shadow-none bg-transparent">
                         <div class="dropdown-menu-md gap-md-4 bg-gigas rounded dropdown-menu-inner">
                             {% for subcategory in category.sub_categories.all %}
-                                <a class="dropdown-item me-4 gap-md-4 d-flex text-white icon-xs" href="#">
+                                <a class="dropdown-item me-4 gap-md-4 d-flex text-white icon-xs" href="{%url 'course:course-detail' subcategory.slug %}">
                                     <div class="me-4 d-flex text-white icon-xs">
                                         {% if subcategory.icon %}
                                             {{ subcategory.icon|safe }}
@@ -151,7 +152,7 @@
               >
                
                 <li class="dropdown-item">
-                  <a class="dropdown-link" href="{%url 'course-list'%}">
+                  <a class="dropdown-link" href="{%url 'course:course-list'  %}">
                      Course List
                   </a>
                 </li>
@@ -176,7 +177,7 @@
               >
                
                 <li class="dropdown-item">
-                  <a class="dropdown-link" href="{%url 'course-list'%}">
+                  <a class="dropdown-link" href="{%url 'course:course-list'%}">
                      Course List
                   </a>
                 </li>
