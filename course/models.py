@@ -33,7 +33,7 @@ class Course(models.Model):
     title = models.CharField(max_length=500)
     slug = models.SlugField(null=True, blank=True)
     author = models.ForeignKey(Author, on_delete=models.CASCADE, null=True)
-    category = models.ManyToManyField('Category')
+    category = models.ManyToManyField('Category',related_name="course_category")
     description = RichTextUploadingField()
     price = models.IntegerField(null=True, default=0)
     discounted_amount = models.IntegerField(null=True, default=0)
