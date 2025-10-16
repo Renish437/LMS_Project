@@ -5,8 +5,8 @@
 
 
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-
 function getCookie(name) {
     let cookieValue = null;
     if (document.cookie && document.cookie !== '') {
@@ -23,10 +23,9 @@ function getCookie(name) {
 }
 const csrftoken = getCookie('csrftoken');
 
-/* ---------------------------------------------------------
-   Gather filters
-   --------------------------------------------------------- */
-function gatherFilters() {
+let searchTimer;
+
+function gatherFilters(page = null) {
     var filters = {};
 
     // Category
@@ -44,38 +43,39 @@ function gatherFilters() {
     $("input[data-filter='instructor']:checked").each(function () { instrVals.push(this.value); });
     if (instrVals.length) filters['instructor[]'] = instrVals;
 
-    // Price (radios)
+    // Price
     var priceVal = $("input[name='price[]']:checked").val();
-    if (priceVal) filters['price[]'] = [priceVal];
+    if (priceVal && priceVal !== 'priceall') filters['price[]'] = priceVal;
 
     // Rating
     var ratingVals = [];
     $("input[data-filter='rating']:checked").each(function () { ratingVals.push(this.value); });
-    if (ratingVals.length) {
-        filters['rating_min'] = Math.max(...ratingVals.map(parseFloat));
-    }
+    if (ratingVals.length) filters['rating_min'] = Math.max(...ratingVals.map(parseFloat));
 
-    // Search (add <input name="search" class="filter-search"> in HTML if needed)
-    var searchVal = $("input[name='search']").val();
+    // Search - robust
+    var $searchInput = $("input[name='search']");
+    var searchVal = ($searchInput.length && $searchInput.val()) ? $searchInput.val().trim() : '';
     if (searchVal) filters['search'] = searchVal;
 
-
+    // Sort
     var sortVal = $("select[name='sort']").val();
     if (sortVal && sortVal !== 'default') filters['sort'] = sortVal;
-    
-    
+
+    // Page - only if a number/string
+    if (page !== null && typeof page === 'string' || typeof page === 'number') {
+        filters['page'] = page;
+    }
+
+    console.log('Gathered filters:', filters);  // Debug: Clean params only
     return filters;
 }
 
-/* ---------------------------------------------------------
-   AJAX on change
-   --------------------------------------------------------- */
-function triggerFilterAjax() {
-    var filterObj = gatherFilters();
-    console.log('Sending filters:', filterObj);  // DEBUG: Check what is sent
+function triggerFilterAjax(page = null) {
+    var filterObj = gatherFilters(page);
+    console.log('Sending filters:', filterObj);
 
     $.ajax({
-        url: "{% url 'course:filter-data' %}",  // Resolves only if inline in template
+        url: "{% url 'course:filter-data' %}",
         data: filterObj,
         dataType: 'json',
         beforeSend: function (xhr, settings) {
@@ -83,36 +83,47 @@ function triggerFilterAjax() {
                 xhr.setRequestHeader("X-CSRFToken", csrftoken);
             }
             $('#filterCourses').html('<div class="text-center"><i class="fa fa-spinner fa-spin"></i> Loading...</div>');
+            $('#coursesPagination').html('');
         },
         success: function (res) {
-            console.log('Response:', res);  // DEBUG: Check data/count
-            if (res.data) {
-                $('#filterCourses').html(res.data);
-                $('.courses-counter').text(res.count + (res.count === 1 ? ' course' : ' courses') + ' found');
-            }
+            console.log('AJAX Success - Count:', res.count);  // Verify filtered count
+            $('#filterCourses').html(res.courses_html);
+            $('#coursesPagination').html(res.pagination_html);
+            $('.courses-counter').text(res.count + (res.count === 1 ? ' course' : ' courses') + ' found');
         },
         error: function (xhr, status, err) {
-            console.error('AJAX Error:', xhr.responseText, status, err);  // DEBUG: Full error
+            console.error('AJAX Error:', xhr.responseText);
             $('#filterCourses').html('<div class="alert alert-danger">Error: ' + (xhr.responseText || err) + '</div>');
         }
     });
 }
 
-// Bind to ALL filter inputs (use a common class to avoid mismatches)
-$(document).on('change', 'input.filter-checkbox, input[name="price[]"], input[name="search"],select.filter-sort', triggerFilterAjax);
+// Bindings - Instant on change
+$(document).on('change', 'input[data-filter], input[name="price[]"], select[name="sort"]', function() {
+    triggerFilterAjax();  // No page
+});
 
-// Optional: Manual button
-$('.btn.filter-checkbox').on('click', triggerFilterAjax);
+$(document).on('keyup', 'input[name="search"]', function(e) {
+    clearTimeout(searchTimer);
+    if (e.key === 'Enter') {
+        triggerFilterAjax();
+    } else {
+        searchTimer = setTimeout(triggerFilterAjax, 500);
+    }
+});
 
-/* ---------------------------------------------------------
-   On load
-   --------------------------------------------------------- */
-$(document).ready(function () {
-    // Add common class to all filter inputs if missing in HTML
-    $('input[data-filter]').addClass('filter-checkbox');
-    $('input[name="price[]"]').addClass('filter-checkbox');
-    
-    triggerFilterAjax();  // Initial load
+// Pagination - Extract page properly, prevent default
+$(document).on('click', '.ajax-page', function(e) {
+    e.preventDefault();
+    var page = $(this).data('page');
+    if (page && !$(this).parent().hasClass('disabled') && !$(this).parent().hasClass('active')) {
+        console.log('Paging to:', page);  // Debug
+        triggerFilterAjax(page);
+    }
+});
+
+$(document).on('click', '.btn.filter-checkbox', function() {
+    triggerFilterAjax();
 });
 </script>
      <!-- PAGE TITLE
@@ -142,8 +153,8 @@ $(document).ready(function () {
     ================================================== -->
    <div class="container mb-6 mb-xl-8 z-index-2">
     <div class="d-lg-flex align-items-center mb-6 mb-xl-0">
-        <p class="mb-lg-0">
-            We found <span class="text-dark courses-counter">{{ courses_initial.count }}</span> courses available for you
+       <p class="mb-lg-0">
+            We found <span class="text-dark courses-counter">{{ paginator.count }}</span> courses available for you
         </p>
         <div class="ms-lg-auto d-lg-flex flex-wrap">
             <div class="mb-4 mb-lg-0 ms-lg-6">
@@ -273,7 +284,7 @@ $(document).ready(function () {
                             <!-- Search -->
                             <form class="mb-4">
                                 <div class="input-group">
-                                    <input class="form-control form-control-sm border-end-0 shadow-none" type="search" placeholder="Search" aria-label="Search">
+                                 <input name="search" class="form-control form-control-sm border-end-0 shadow-none" type="search" placeholder="Search" aria-label="Search">
                                     <div class="input-group-append">
                                         <button class="btn btn-sm btn-outline-white border-start-0 text-dark bg-transparent" type="submit">
                                             <!-- Icon -->
@@ -289,12 +300,12 @@ $(document).ready(function () {
 
                             <ul class="list-unstyled list-group list-checkbox list-checkbox-limit">
                             
-                            {% for instructor in instructors %}
-                    <li class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input filter-checkbox" id="instructor-{{instructor.id}}" data-filter="instructor" value="{{instructor.id}}">
-                        <label class="custom-control-label font-size-base" for="instructor-{{instructor.id}}">{{instructor.name}} ({{instructor.course_set.count}})</label>  <!-- Dynamic count -->
-                    </li>
-                {% endfor %}
+                         {% for instructor in instructors %}
+                            <li class="custom-control custom-checkbox">
+                                <input  type="checkbox" class="custom-control-input" id="instructor-{{instructor.id}}" data-filter="instructor" value="{{instructor.id}}">
+                                <label class="custom-control-label font-size-base" for="instructor-{{instructor.id}}">{{instructor.name}} ({{instructor.course_set.count}})</label>
+                            </li>
+                            {% endfor %}
                                 
                              
                           
@@ -325,20 +336,20 @@ $(document).ready(function () {
                         </div>
 
                        <div id="coursefiltercollapse3" class="collapse show mt-n2 px-6 pb-6" aria-labelledby="coursefilter3" data-parent="#courseSidebar">
-            <ul class="list-unstyled list-group list-checkbox">
-                <li class="custom-control custom-radio">
-                    <input type="radio" id="priceall" name="price[]" class="custom-control-input filter-checkbox" value="priceall" checked>
-                    <label class="custom-control-label font-size-base" for="priceall">All (18)</label>
-                </li>
-                <li class="custom-control custom-radio">
-                    <input type="radio" id="pricefree" name="price[]" class="custom-control-input filter-checkbox" value="pricefree">
-                    <label class="custom-control-label font-size-base" for="pricefree">Free (3)</label>
-                </li>
-                <li class="custom-control custom-radio">
-                    <input type="radio" id="pricepaid" name="price[]" class="custom-control-input filter-checkbox" value="pricepaid">
-                    <label class="custom-control-label font-size-base" for="pricepaid">Paid (15)</label>
-                </li>
-            </ul>
+           <ul class="list-unstyled list-group list-checkbox">
+                            <li class="custom-control custom-radio">
+                                <input type="radio" id="priceall" name="price[]" class="custom-control-input" value="priceall" checked>
+                                <label class="custom-control-label font-size-base" for="priceall">All ({{ paginator.count }})</label>  <!-- Dynamic if possible -->
+                            </li>
+                            <li class="custom-control custom-radio">
+                                <input type="radio" id="pricefree" name="price[]" class="custom-control-input" value="pricefree">
+                                <label class="custom-control-label font-size-base" for="pricefree">Free ({{ free_count|default:0 }})</label>  <!-- Pass free_count from view if needed -->
+                            </li>
+                            <li class="custom-control custom-radio">
+                                <input type="radio" id="pricepaid" name="price[]" class="custom-control-input" value="pricepaid">
+                                <label class="custom-control-label font-size-base" for="pricepaid">Paid ({{ paid_count|default:0 }})</label>
+                            </li>
+                        </ul>
         </div>
                     </div>
 
@@ -433,41 +444,23 @@ $(document).ready(function () {
 
             </div>
 
-            <div class="col-xl-8">
-                <div class="row row-cols-md-2 mb-3 " id="filterCourses">
-                 
-                 {% for course in courses %}
-                  {% include 'course/ajax/courses.html' with courses=courses_initial %}
-                 {% endfor %}
-                    
-          
-              
-                </div>
-
-                <!-- PAGINATION
-                ================================================== -->
-                <div id="coursesPagination">
-    {% include 'course/ajax/pagination.html' with courses_page=courses_initial_page paginator=courses_initial_paginator query_params=request.GET %}
-</div>
-                <!-- <nav class="mb-11" aria-label="Page navigationa">
-                    <ul class="pagination justify-content-center">
-                        <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Previous">
-                                <span aria-hidden="true"><i class="fas fa-arrow-left"></i></span>
-                            </a>
-                        </li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item active"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Next">
-                                <span aria-hidden="true"><i class="fas fa-arrow-right"></i></span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav> -->
-
+           <!-- MAIN CONTENT -->
+        <div class="col-xl-8">
+            <div id="filterCourses">
+                {% if courses_initial_page %}
+                    {% include 'course/ajax/courses_grid.html' with courses=courses_initial_page %}
+                {% else %}
+                    <div class="col-12 text-center py-5"><p class="text-muted">No courses found.</p></div>
+                {% endif %}
             </div>
+
+            <!-- PAGINATION -->
+            <div id="coursesPagination">
+                {% if courses_initial_page %}
+                    {% include 'course/ajax/pagination.html' with courses_page=courses_initial_page paginator=paginator %}
+                {% endif %}
+            </div>
+        </div>
         </div>
     </div>
 {% endblock content %}

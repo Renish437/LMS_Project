@@ -44,8 +44,10 @@ INSTALLED_APPS = [
     'accounts',
     'crispy_forms',
     'crispy_bootstrap5',
-       'ckeditor',
-    'ckeditor_uploader',
+      
+         "ckeditor",
+           "ckeditor_uploader",
+    
 ]
   
 

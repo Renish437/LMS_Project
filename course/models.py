@@ -5,6 +5,7 @@ from accounts.models import Author
 from ckeditor.fields import RichTextField 
 from ckeditor_uploader.fields import RichTextUploadingField
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.urls import reverse
 class Category(models.Model):
     name = models.CharField(max_length=200)
     slug = models.SlugField(max_length=200)
@@ -55,8 +56,7 @@ class Course(models.Model):
     featured_video = models.CharField(max_length=500, null=True, blank=True)
     review_count = models.IntegerField(null=True, blank=True)
     lesson_count = models.IntegerField(null=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+   
     rating = models.DecimalField(
         max_digits=2,             
         decimal_places=1,          
@@ -68,7 +68,7 @@ class Course(models.Model):
         ]
     )
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True) 
+    updated_at = models.DateTimeField(auto_now=True)
     class Meta:
         db_table = 'course_courses'
         managed = True
@@ -76,6 +76,8 @@ class Course(models.Model):
         verbose_name_plural = 'Courses'
     def __str__(self):
         return self.title
+    def get_absolute_url(self):
+        return reverse('course:detail', kwargs={'slug': self.slug})
     
 
     

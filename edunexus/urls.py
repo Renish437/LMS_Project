@@ -28,7 +28,7 @@ from django.urls import path,include
 urlpatterns = [
 
     path('admin/', admin.site.urls),
-    path('ckeditor/', include('ckeditor_uploader.urls')),
+    path("ckeditor/", include("ckeditor_uploader.urls")),
     path('', include('home.urls')),
     path('course/', include('course.urls')),
     path('edunexus/', include('app.urls')),

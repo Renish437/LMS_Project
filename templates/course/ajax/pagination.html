@@ -1,16 +1,18 @@
-{% if courses_page %}
+{% if courses_page and paginator.count > 0 %}
     <nav class="mb-11" aria-label="Page navigation">
         <ul class="pagination justify-content-center">
             <!-- Previous -->
             <li class="page-item {% if not courses_page.has_previous %}disabled{% endif %}">
-                <a class="page-link ajax-page" href="#" data-page="{{ courses_page.previous_page_number }}" aria-label="Previous">
+                <a class="page-link ajax-page" href="#" 
+                   data-page="{% if courses_page.has_previous %}{{ courses_page.previous_page_number }}{% else %}1{% endif %}" 
+                   aria-label="Previous">
                     <span aria-hidden="true"><i class="fas fa-arrow-left"></i></span>
                 </a>
             </li>
 
-            <!-- Page Numbers (show 5 around current for large sets) -->
-            {% for num in courses_page.paginator.page_range %}
-                {% if num|add:'-2' <= courses_page.number and num|add:'2' >= courses_page.number or num == 1 or num == courses_page.paginator.num_pages %}
+            <!-- Page Numbers -->
+            {% for num in paginator.page_range %}
+                {% if num <= 3 or num > paginator.num_pages|add:-3 or courses_page.number|add:-2 <= num and num <= courses_page.number|add:2 %}
                     <li class="page-item {% if courses_page.number == num %}active{% endif %}">
                         <a class="page-link ajax-page" href="#" data-page="{{ num }}">{{ num }}</a>
                     </li>
@@ -19,13 +21,14 @@
 
             <!-- Next -->
             <li class="page-item {% if not courses_page.has_next %}disabled{% endif %}">
-                <a class="page-link ajax-page" href="#" data-page="{{ courses_page.next_page_number }}" aria-label="Next">
+                <a class="page-link ajax-page" href="#" 
+                   data-page="{% if courses_page.has_next %}{{ courses_page.next_page_number }}{% else %}{{ paginator.num_pages }}{% endif %}" 
+                   aria-label="Next">
                     <span aria-hidden="true"><i class="fas fa-arrow-right"></i></span>
                 </a>
             </li>
         </ul>
     </nav>
 {% else %}
-    <p class="text-muted">No pagination courses.</p>
+    <p class="text-muted">No courses available.</p>
 {% endif %}
-
