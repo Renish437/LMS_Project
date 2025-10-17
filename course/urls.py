@@ -11,4 +11,6 @@ urlpatterns = [
     
     # Detail view – make it distinct (e.g., require 'course/' prefix or put it first if slugs are unique)
     path('courses/<slug:slug>/', views.course_detail, name='course-detail'),
+    
+    path('search',views.search_course,name="search-course")
 ]

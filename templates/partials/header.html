@@ -326,9 +326,9 @@
     </a>
     <div class="collapse position-absolute mt-2 end-0 start-0" id="collapseSearchMobile">
       <div class="card card-body shadow-sm">
-        <form class="w-100">
+        <form class="w-100" method="GET" action="{% url 'course:search-course' %}" >
           <div class="input-group">
-            <input type="search" class="form-control border-0" placeholder="Search..." aria-label="Search">
+            <input type="search" name="keyword" class="form-control border-0" placeholder="Search..." aria-label="Search">
             <button class="btn btn-gigas" type="submit"><i class="bi bi-search"></i></button>
           </div>
         </form>

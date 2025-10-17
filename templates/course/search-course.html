@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+  <section class="pt-5 pb-9 py-md-11 bg-white">
+  <div class="container container-wd">
+    <div class="row align-items-end mb-7">
+      <div class="col-xl mb-5 mb-xl-0">
+        <h1 data-aos="fade-right" class="mb-1">
+            Search Courses for {{keyword}} 
+         </h1>
+      
+      </div>
+     
+    </div>
+
+    <div data-aos="fade-up" class="tab-content flickity-tab" id="pills-tabContent">
+      <!-- All Categories Tab -->
+      <div class="tab-pane fade show active" id="pills-all" role="tabpanel" aria-labelledby="pills-all-tab">
+       <div class="mx-n4 flickity-button-outset" data-flickity='{"pageDots": true, "prevNextButtons": true, "cellAlign": "left", "wrapAround": true, "imagesLoaded": true}'>
+          {% for course in courses %}
+            <div class="col-12 col-md-6 col-xl-4 col-wd-3 pb-4 pb-md-7" style="padding-right: 15px; padding-left: 15px">
+              <!-- Card -->
+            {% include  'partials/course_card.html' with course=course%}
+            </div>
+          {% empty %}
+            <div class="text-center p-4">No courses available for {{keyword}} .</div>
+          {% endfor %}
+        </div>
+      </div>
+
+    
+      
+    </div>
+  </div>
+</section>
+{% endblock content %}

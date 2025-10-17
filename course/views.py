@@ -135,3 +135,18 @@ def filter_data(request):
 def course_detail(request, slug):
     course = get_object_or_404(Course, slug=slug)
     return render(request, 'course/course-detail.html', {'course': course})
+
+
+
+def search_course(request):
+    keyword = request.GET.get('keyword', '')  # get the keyword safely
+    print(keyword)  # for debugging, optional
+
+    # You can later add filtering logic like:
+    courses = Course.objects.filter(Q(title__icontains=keyword)|Q(category__name__icontains=keyword)).distinct()
+    context ={
+        'courses':courses,
+        'keyword': keyword
+    }
+
+    return render(request, 'course/search-course.html',context)
