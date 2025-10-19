@@ -1,0 +1,67 @@
+  <div>
+                        <h2 class="mb-5">What you'll learn</h2>
+<div class="row row-cols-lg-2 my-4">
+    <div class="col-12 col-lg-6">
+        <ul class="list-style-v2 list-unstyled">
+            {% if course.course_goals.all %}
+                {% for goal in course.course_goals.all %}
+                    {% if forloop.counter0|divisibleby:2 %}
+                        <li>{{ goal.point }}</li>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                <li>No Points</li>
+            {% endif %}
+        </ul>
+    </div>
+    <div class="col-12 col-lg-6">
+        <ul class="list-style-v2 list-unstyled ms-xl-6">
+            {% if course.course_goals.all %}
+                {% for goal in course.course_goals.all %}
+                    {% if not forloop.counter0|divisibleby:2 %}
+                        <li>{{ goal.point }}</li>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                <li>No Points</li>
+            {% endif %}
+        </ul>
+    </div>
+</div>
+
+                        <h2 class="mb-5">Requirements</h2>
+                       {% if course.course_requirements.all %}
+                          <ul class="list-style-v2 list-unstyled">
+                           
+                           {% for req in course.course_requirements.all %}
+                             <li>{{req.point}}</li>
+                           {% endfor %}
+                            
+                           
+                        </ul>
+                        {% else %}
+                         <ul class="list-style-v2 list-unstyled">
+                            <li>No Points</li>
+                           
+                        </ul>
+                       {% endif %}
+                       </div>
+
+                       
+                        <p class="mb-6 line-height-md"> {{course.description|slice:"300"}} </p>
+                 
+                        <p class="collapse mb-6 line-height-md" id="readcollapseExample{{ course.id }}"> {{course.description|slice:"300:"}} </p>
+                        <a class="text-teal read-more h6 d-inline-block mb-8" data-bs-toggle="collapse" href="#readcollapseExample{{ course.id }}" role="button" aria-expanded="false" aria-controls="readcollapseExample">
+                            <span class="d-inline-flex align-items-center more">
+                                Read More
+                                <span class="d-flex align-items-center justify-content-center bg-teal rounded-circle ms-2 p-2 w-26p">
+                                    <i class="fas fa-plus font-size-10 text-white"></i>
+                                </span>
+                            </span>
+                            <span class="d-inline-flex align-items-center less">
+                                Read Less
+                                <span class="d-flex align-items-center justify-content-center bg-teal rounded-circle ms-2 p-2 w-26p">
+                                    <i class="fas fa-minus font-size-10 text-white"></i>
+                                </span>
+                            </span>
+                        </a>
