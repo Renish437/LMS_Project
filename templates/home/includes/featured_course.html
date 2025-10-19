@@ -57,7 +57,7 @@
               {% if category in course.category.all %}
              <div class="col-12 col-md-6 col-xl-4 col-wd-3 pb-4 pb-md-7" style="padding-right: 15px; padding-left: 15px">
                   <!-- Card -->
-                  {% include  'partials/course_card.html' with course=course%}
+                  {% include  'partials/course_card.html' with course=course %}
                 </div>
               {% endif %}
             {% empty %}
@@ -70,57 +70,4 @@
     </div>
   </div>
 </section>
-<style>
-  /* static/css/flickity-custom.css */
-.flickity-page-dots .dot {
-  /* Default styles for inactive dots */
-  background: #ccc; /* Example: light gray for inactive dots */
-  opacity: 0.5;
-}
 
-.flickity-page-dots .dot.is-selected {
-  color: #6f42c1; /* Assuming text-gigas is a purple color, replace with actual text-gigas hex or value */
-  opacity: 1;
-}
-/* Disable Flickity's overflow clipping */
-.flickity-viewport {
-  overflow: visible !important;
-}
-
-/* Keep cells visible while sliding */
-.flickity-slider > * {
-  opacity: 1 !important;
-  visibility: visible !important;
-  transform: none !important;
-}
-
-</style>
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-  // Select all tab triggers
-  const tabTriggers = document.querySelectorAll('#pills-tab button, #pills-tab a');
-
-  tabTriggers.forEach(function(tab) {
-    tab.addEventListener('shown.bs.tab', function(event) {
-      // Find the Flickity container inside the active tab
-      const flickityContainers = event.target.closest('.tab-content').querySelectorAll('.flickity-button-outset');
-
-      flickityContainers.forEach(function(container) {
-        if (container.flickityInstance) {
-          container.flickityInstance.resize(); // recalculates widths
-        } else {
-          // Initialize Flickity if not already
-          container.flickityInstance = new Flickity(container, {
-            pageDots: true,
-            prevNextButtons: true,
-            cellAlign: 'left',
-            wrapAround: true,
-            imagesLoaded: true,
-            contain: true
-          });
-        }
-      });
-    });
-  });
-});
-</script>

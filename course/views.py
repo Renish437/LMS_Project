@@ -6,20 +6,35 @@ from django.template.loader import render_to_string
 from django.db.models import Q,Count
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .models import *
+from django.utils.safestring import mark_safe
 # course/views.py
 
 
 
 logger = logging.getLogger(__name__)
 
-def course_list(request):
+def course_list(request,slug=None):
     initial_qs = Course.objects.select_related('author', 'level') \
                                 .prefetch_related('category') \
                                 .order_by('-id')
+    selected_category = request.GET.get('category')
+
+    # ✅ Filter by category slug (if in URL)
+    # if slug:
+    #     selected_category = get_object_or_404(Category, slug=slug)
+    #     # Include subcategories as well
+    #     subcategories = selected_category.sub_categories.all()
+    #     initial_qs = initial_qs.filter(category__in=[selected_category] + list(subcategories)).distinct()
     
     paginator = Paginator(initial_qs, 9)
     page_number = request.GET.get('page')
     courses_initial_page = paginator.get_page(page_number)
+    for course in courses_initial_page:
+        try:
+            rating = float(course.rating) if course.rating else 0
+            course.rating_percentage = (rating/5)*100
+        except (ValueError,TypeError):
+            course.rating_percentage =0
 
     # Fixed annotations: Use correct reverse related names from models/error
     course_categories = Category.objects.filter(is_active=True).annotate(course_count=Count('course_category'))  # M2M reverse
@@ -37,6 +52,8 @@ def course_list(request):
         'instructors': instructors,
         'free_count': free_count,
         'paid_count': paid_count,
+        
+        'selected_category': selected_category,
     })
 
 def filter_data(request):
@@ -134,7 +151,23 @@ def filter_data(request):
 
 def course_detail(request, slug):
     course = get_object_or_404(Course, slug=slug)
-    return render(request, 'course/course-detail.html', {'course': course})
+
+    try:
+        rating = float(course.rating) if course.rating else 0
+        course.rating_percentage = (rating/5)*100
+    except (ValueError,TypeError):
+        course.rating_percentage =0
+    
+    
+    
+    course.description = mark_safe(course.description)
+    
+    
+    context = {
+        "course": course,
+   
+    }
+    return render(request, 'course/course-detail.html', context)
 
 
 

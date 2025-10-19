@@ -71,7 +71,7 @@
     <a href="#" class="card-img sk-thumbnail img-ratio-9 d-block">
       <img class="rounded shadow-light-lg" src="{{ slider.slider_course.featured_image.url|default:'/static/assets/img/products/placeholder.jpg' }}" alt="{{ slider.slider_course.title }}" />
     </a>
-    <span class="badge sk-fade-bottom badge-lg badge-orange badge-pill badge-float bottom-0 left-0 mb-4 ms-4">
+    <span class="badge sk-fade-bottom badge-lg badge-gigas badge-pill badge-float bottom-0 left-0 mb-4 ms-4">
       <span class="text-white text-uppercase fw-bold font-size-xs">Discount: {{ slider.slider_course.discount }}%</span>
     </span>
   </div>
@@ -92,12 +92,12 @@
     </a>
     <!-- Heading -->
     <div class="position-relative">
-      <a href="#" class="d-block stretched-link">
+      <a href="{{slider.slider_course.get_url}}" class="d-block stretched-link">
         <h4 class="line-clamp-2 h-md-48 h-lg-58 me-md-6 me-lg-10 me-xl-4 mb-2">{{ slider.slider_course.title }}</h4>
       </a>
       <div class="d-lg-flex align-items-end flex-wrap mb-n1">
         <div class="star-rating mb-2 mb-lg-0 me-lg-3">
-            <div class="rating" style="width:50%"></div>
+            <div class="rating" style="width: {{ slider.slider_course.rating_percentage  }}%"></div>
         </div>
         <div class="font-size-sm">
           <span>{{ slider.slider_course.rating|default:"5.45" }} ({{ slider.slider_course.review_count|default:"5.8k+" }} reviews)</span>

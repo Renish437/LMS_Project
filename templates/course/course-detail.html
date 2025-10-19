@@ -1,9 +1,13 @@
 {% extends 'base.html' %}
+{% load course_tags %}
 {% load static %}
+ {% block title %}
+  EduNexus-{{course.title}}
+  {% endblock title %}
 {% block content %}
       <!-- PAGE HEADER
     ================================================== -->
-    <div class="position-relative pt-8 pt-xl-11">
+    <div class="position-relative pt-8 pt-xl-8">
         <div class="position-absolute top-0 right-0 left-0 overlay overlay-custom-left d-none d-xl-block">
             <img class="img-fluid" src="{% static 'assets/img/covers/cover-19.jpg' %}" alt="...">
         </div>
@@ -16,9 +20,9 @@
             <div class="col-lg-8 mb-6 mb-lg-0 position-relative">
                 <div class="course-single-white">
                     <h1 class="me-xl-14 text-white">
-                        {{course.title}} - UI/UX Design
+                        {{course.title|truncatechars:32}} 
                     </h1>
-                    <p class="me-xl-13 mb-5 text-white">Master Figma app to get a job in UI Design, User Interface, User Experience design, Web Design & UX design.</p>
+                    <p class="me-xl-13 mb-5 text-white"> {{course.short_description|truncatechars:150}} </p>
 
                     <a href="#" class="badge badge-lg badge-rounded-circle badge-secondary font-size-base badge-float badge-float-inside top-0 text-white">
                         <i class="far fa-heart"></i>
@@ -27,40 +31,11 @@
 
                 <!-- COURSE META
                 ================================================== -->
-                <div class="d-md-flex align-items-center mb-5 course-single-white">
-                    <div class="border rounded-circle d-inline-block mb-4 mb-md-0 me-md-6 me-lg-4 me-xl-6 bg-white">
-                        <div class="p-2">
-                            <img src="assets/img/avatars/avatar-1.jpg" alt="..." class="rounded-circle" width="68" height="68">
-                        </div>
-                    </div>
-
-                    <div class="mb-4 mb-md-0 me-md-8 me-lg-4 me-xl-8">
-                        <h6 class="mb-0 text-white">Created by</h6>
-                        <a href="#" class="font-size-sm text-white">Alison Dawn</a>
-                    </div>
-
-                    <div class="mb-4 mb-md-0 me-md-8 me-lg-4 me-xl-8">
-                        <h6 class="mb-0 text-white">Categories</h6>
-                        <a href="#" class="font-size-sm text-white">Design</a>
-                    </div>
-
-                    <div class="mb-4 mb-md-0 me-md-6 me-lg-4 me-xl-6">
-                        <h6 class="mb-0 text-white">Review</h6>
-                        <div class="d-lg-flex align-items-center">
-                            <div class="star-rating mb-2 mb-lg-0">
-                                <div class="rating" style="width:100%;"></div>
-                            </div>
-
-                            <div class="font-size-sm ms-lg-3 text-white">
-                                <span>9.45 (9.8k+ reviews)</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                {% include 'course/course-detail/course-meta.html' with course=course %}
 
                 <!-- COURSE INFO TAB
                 ================================================== -->
-                <ul id="pills-tab" class="nav course-tab-v1 border-bottom h4 my-8 pt-1" role="tablist">
+                <ul id="pills-tab" class="nav course-tab-v1 border-bottom h4 my-7 pt-1" role="tablist">
                     <li class="nav-item">
                         <a class="nav-link active" id="pills-overview-tab" data-bs-toggle="pill" href="#pills-overview" role="tab" aria-controls="pills-overview" aria-selected="true">Overview</a>
                     </li>
@@ -76,12 +51,61 @@
                 </ul>
 
                 <div class="tab-content" id="pills-tabContent">
-                    <div class="tab-pane fade show active" id="pills-overview" role="tabpanel" aria-labelledby="pills-overview-tab">
-                        <h3 class="">Course Description</h3>
-                        <p class="mb-6 line-height-md">Do you want to become a UI/UX designer but you don't know where to start? This course will allow you to develop your user interface design skills and you can add UI designer to your CV and start getting clients for your skills.</p>
-                        <p class="mb-6 line-height-md">Hi everyone. I'm Arash and I'm a UI/UX designer. In this course, I will help you learn and master Figma app comprehensively from scratch. Figma is an innovative and brilliant tool for User Interface design. It's used by everyone from entrepreneurs and start-ups to Apple, Airbnb, Facebook, etc.</p>
-                        <p class="collapse mb-6 line-height-md" id="readcollapseExample">Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente  I will help you learn and master Figma app comprehensively from scratch. Figma is an innovative and brilliant tool for User Interface design. It's used by everyone from entrepreneurs ea proident.</p>
-                        <a class="text-teal read-more h6 d-inline-block mb-8" data-bs-toggle="collapse" href="#readcollapseExample" role="button" aria-expanded="false" aria-controls="readcollapseExample">
+                     <div class="tab-pane fade show active" id="pills-overview" role="tabpanel" aria-labelledby="pills-overview-tab">
+                       <div>
+                        <h2 class="mb-5">What you'll learn</h2>
+<div class="row row-cols-lg-2 my-4">
+    <div class="col-12 col-lg-6">
+        <ul class="list-style-v2 list-unstyled">
+            {% if course.course_goals.all %}
+                {% for goal in course.course_goals.all %}
+                    {% if forloop.counter0|divisibleby:2 %}
+                        <li>{{ goal.point }}</li>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                <li>No Points</li>
+            {% endif %}
+        </ul>
+    </div>
+    <div class="col-12 col-lg-6">
+        <ul class="list-style-v2 list-unstyled ms-xl-6">
+            {% if course.course_goals.all %}
+                {% for goal in course.course_goals.all %}
+                    {% if not forloop.counter0|divisibleby:2 %}
+                        <li>{{ goal.point }}</li>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                <li>No Points</li>
+            {% endif %}
+        </ul>
+    </div>
+</div>
+
+                        <h2 class="mb-5">Requirements</h2>
+                       {% if course.course_requirements.all %}
+                          <ul class="list-style-v2 list-unstyled">
+                           
+                           {% for req in course.course_requirements.all %}
+                             <li>{{req.point}}</li>
+                           {% endfor %}
+                            
+                           
+                        </ul>
+                        {% else %}
+                         <ul class="list-style-v2 list-unstyled">
+                            <li>No Points</li>
+                           
+                        </ul>
+                       {% endif %}
+                       </div>
+
+                       
+                        <p class="mb-6 line-height-md"> {{course.description|slice:"300"}} </p>
+                 
+                        <p class="collapse mb-6 line-height-md" id="readcollapseExample{{ course.id }}"> {{course.description|slice:"300:"}} </p>
+                        <a class="text-teal read-more h6 d-inline-block mb-8" data-bs-toggle="collapse" href="#readcollapseExample{{ course.id }}" role="button" aria-expanded="false" aria-controls="readcollapseExample">
                             <span class="d-inline-flex align-items-center more">
                                 Read More
                                 <span class="d-flex align-items-center justify-content-center bg-teal rounded-circle ms-2 p-2 w-26p">
@@ -96,46 +120,9 @@
                             </span>
                         </a>
 
-                        <a href="https://www.youtube.com/watch?v=9I-Y6VQ6tyI" class="d-block sk-thumbnail rounded mb-8" data-fancybox>
-                            <div class="h-90p w-90p rounded-circle bg-white size-30-all d-inline-flex align-items-center justify-content-center position-absolute center z-index-1">
-                                <!-- Icon -->
-                                <svg width="14" height="16" viewBox="0 0 14 16" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M12.8704 6.15374L3.42038 0.328572C2.73669 -0.0923355 1.9101 -0.109836 1.20919 0.281759C0.508282 0.673291 0.0898438 1.38645 0.0898438 2.18929V13.7866C0.0898438 15.0005 1.06797 15.9934 2.27016 16C2.27344 16 2.27672 16 2.27994 16C2.65563 16 3.04713 15.8822 3.41279 15.6591C3.70694 15.4796 3.79991 15.0957 3.62044 14.8016C3.44098 14.5074 3.05697 14.4144 2.76291 14.5939C2.59188 14.6982 2.42485 14.7522 2.27688 14.7522C1.82328 14.7497 1.33763 14.3611 1.33763 13.7866V2.18933C1.33763 1.84492 1.51713 1.53907 1.81775 1.3711C2.11841 1.20314 2.47294 1.21064 2.76585 1.39098L12.2159 7.21615C12.4999 7.39102 12.6625 7.68262 12.6618 8.01618C12.6611 8.34971 12.4974 8.64065 12.2118 8.81493L5.37935 12.9983C5.08548 13.1783 4.9931 13.5623 5.17304 13.8562C5.35295 14.1501 5.73704 14.2424 6.03092 14.0625L12.8625 9.87962C13.5166 9.48059 13.9081 8.78496 13.9096 8.01868C13.9112 7.25249 13.5226 6.55524 12.8704 6.15374Z" fill="currentColor"/>
-                                </svg>
+                      
 
-                            </div>
-                            <img class="rounded shadow-light-lg" src="{% static 'assets/img/products/product-2.jpg'%}" alt="...">
-                        </a>
 
-                        <h3 class="mb-5">What you'll learn</h3>
-                        <div class="row row-cols-lg-2 mb-8">
-                            <div class="col-md">
-                                <ul class="list-style-v1 list-unstyled">
-                                    <li>Become a UI/UX designer.</li>
-                                    <li>You will be able to start earning money skills.</li>
-                                    <li>Build a UI project from beginning to end.</li>
-                                    <li>Work with colors & fonts.</li>
-                                    <li>You will create your own UI Kit.</li>
-                                </ul>
-                            </div>
-
-                            <div class="col-md">
-                                <ul class="list-style-v1 list-unstyled ms-xl-6">
-                                    <li>Build & test a complete mobile app.</li>
-                                    <li>Learn to design mobile apps & websites.</li>
-                                    <li>Design 3 different logos.</li>
-                                    <li>Create low-fidelity wireframe.</li>
-                                    <li>Downloadable exercise files.</li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <h3 class="mb-5">Requirements</h3>
-                        <ul class="list-style-v2 list-unstyled">
-                            <li>We do not require any previous experience or pre-defined skills to take this course. A great orientation would be enough to master UI/UX design.</li>
-                            <li>A computer with a good internet connection.</li>
-                            <li>Adobe Photoshop (OPTIONAL)</li>
-                        </ul>
                     </div>
 
                     <div class="tab-pane fade" id="pills-curriculum" role="tabpanel" aria-labelledby="pills-curriculum-tab">
@@ -900,7 +887,7 @@
                         <div class="d-flex align-items-center mb-6">
                             <div class="d-inline-block rounded-circle border me-6 p-2">
                                 <div class="avatar avatar-size-120">
-                                    <img src="assets/img/avatars/avatar-2.jpg" alt="..." class="avatar-img rounded-circle">
+                                    <img src="{% static 'assets/img/avatars/avatar-2.jpg'%}" alt="..." class="avatar-img rounded-circle">
                                 </div>
                             </div>
                             <div class="media-body">
@@ -1153,7 +1140,7 @@
                             </svg>
 
                         </div>
-                        <img class="rounded shadow-light-lg" src="assets/img/products/product-2.jpg" alt="...">
+                        <img class="rounded shadow-light-lg" src="{{course.featured_image.url}}" alt="...">
                     </a>
 
                     <div class="pt-5 pb-4 px-5 px-lg-3 px-xl-5">
@@ -1715,4 +1702,6 @@
             </div>
         </div>
     </div>
+ 
+
 {% endblock content %}

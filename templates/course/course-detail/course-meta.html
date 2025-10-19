@@ -1,0 +1,36 @@
+   <div class="d-md-flex align-items-start mb-5 course-single-white">
+                    <div class="border rounded-circle d-inline-block mb-4 mb-md-0 me-md-6 me-lg-4 me-xl-6 bg-white">
+                        <div class="py-1 px-2">
+                            <img src="{{course.author.author_profile.url}}" alt="{{course.author.name}}" class="rounded-circle" width="68" height="68">
+                        </div>
+                    </div>
+
+                    <div class="mb-4 mb-md-0 me-md-8 me-lg-4 me-xl-8">
+                        <h6 class="mb-0 text-white">Created by</h6>
+                        <a href="#" class="font-size-sm text-white">{{course.author.name}}</a>
+                    </div>
+
+                    <div class="mb-4 mb-md-0 me-md-8 me-lg-4 me-xl-8">
+                        <h6 class="mb-0 text-white">Categories</h6>
+                        <a href="#" class="font-size-sm text-white">
+                            
+                            {% for cat in course.category.all %}
+                            {{cat.name}}{% if not forloop.last %},{% endif %}
+                            {% endfor %}
+                                
+                        </a>
+                    </div>
+
+                    <div class="mb-4 mb-md-0 me-md-6 me-lg-4 me-xl-6">
+                        <h6 class="mb-0 text-white">Review</h6>
+                        <div class="d-lg-flex align-items-center">
+                            <div class="star-rating mb-2 mb-lg-0">
+                                <div class="rating" style="width: {{ course.rating_percentage }}%"></div>
+                            </div>
+
+                            <div class="font-size-sm ms-lg-3 text-white">
+                                <span>{{ course.rating|default:"3.6" }} ({{course.review_count|default:"2.4"}}k+ reviews)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>

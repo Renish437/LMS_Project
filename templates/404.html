@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+ {% block title %}
+  EduNexus-Error
+  {% endblock title %}
+<div class="container my-10 text-center">
+    <!-- Illustration -->
+
+<img src="https://cdni.iconscout.com/illustration/premium/thumb/404-error-illustration-svg-download-png-3119148.png" alt="Page Not Found" class="img-fluid mb-5 mb-md-9">
+
+
+    <h1 class="display-6">Ohh! Page Not Found</h1>
+    <p class="mb-6">We can’t seem to find the page you’re looking for</p>
+
+    <a href="{% url 'home' %}" class="d-inline-block btn btn-gigas mt-3">
+        Back to Home
+    </a>
+</div>
+{% endblock content %}

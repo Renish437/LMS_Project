@@ -1,12 +1,15 @@
 {% extends 'base.html' %}
 {% load static %}
+ {% block title %}
+  EduNexus-CourseList
+  {% endblock title %}
 {% block content %}
   {% load course_tags %}
 
 
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
+ <script>
 function getCookie(name) {
     let cookieValue = null;
     if (document.cookie && document.cookie !== '') {
@@ -65,6 +68,7 @@ function gatherFilters(page = null) {
     if (page !== null && typeof page === 'string' || typeof page === 'number') {
         filters['page'] = page;
     }
+ 
 
     console.log('Gathered filters:', filters);  // Debug: Clean params only
     return filters;
@@ -97,6 +101,46 @@ function triggerFilterAjax(page = null) {
         }
     });
 }
+$(document).ready(function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const initialCategory = urlParams.get('category');
+
+    // --- First load: check the checkbox but do NOT remove param ---
+    if (initialCategory) {
+        const $checkbox = $("#category-" + initialCategory);
+        if ($checkbox.length) {
+            $checkbox.prop("checked", true); // check once
+        }
+
+        triggerFilterAjax(); // run filter after checkbox is checked
+    }
+
+    // --- Handle user checking/unchecking checkboxes ---
+    $(document).on("change", ".filter-checkbox", function() {
+        updateCategoryURL();
+        triggerFilterAjax();
+    });
+
+    function updateCategoryURL() {
+        const checkedCategories = $("input[data-filter='category']:checked")
+                                   .map(function(){ return this.value; }).get();
+
+        const url = new URL(window.location);
+
+        // Clear all previous category params
+        url.searchParams.delete('category');
+
+        // Append checked ones
+        checkedCategories.forEach(val => url.searchParams.append('category', val));
+
+        // Update URL dynamically
+        window.history.replaceState({}, '', url);
+    }
+});
+
+
+
+
 
 // Bindings - Instant on change
 $(document).on('change', 'input[data-filter], input[name="price[]"], select[name="sort"]', function() {
@@ -125,6 +169,8 @@ $(document).on('click', '.ajax-page', function(e) {
 $(document).on('click', '.btn.filter-checkbox', function() {
     triggerFilterAjax();
 });
+
+
 </script>
      <!-- PAGE TITLE
     ================================================== -->
@@ -209,7 +255,7 @@ $(document).on('click', '.btn.filter-checkbox', function() {
                               {% if not category.parent_category %}
                                 
                               <li class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input filter-checkbox" id="category-{{category.id}}" data-filter="category" value="{{category.id}}">
+                                <input type="checkbox" class="custom-control-input filter-checkbox" id="category-{{category.id}}" data-filter="category" value="{{category.id}}" >
                                 <label class="custom-control-label font-size-base" for="category-{{category.id}}">{{category.name}} ({{category.course_category.count}})</label>
                             </li>
                               {% endif %}
@@ -247,7 +293,7 @@ $(document).on('click', '.btn.filter-checkbox', function() {
                               {% for category in course_categories %}
                                  {% if category.parent_category %}
                                     <li class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input filter-checkbox" id="category-{{category.id}}" data-filter="category" value="{{category.id}}" >
+                                    <input type="checkbox" class="custom-control-input filter-checkbox" id="category-{{category.id}}" data-filter="category" value="{{category.id}}"  >
                                     <label class="custom-control-label font-size-base" for="category-{{category.id}}">{{category.name}} ({{category.course_category.count}})</label>
                                 </li>
                                  {% endif %}

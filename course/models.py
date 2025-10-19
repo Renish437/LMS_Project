@@ -43,9 +43,10 @@ class Course(models.Model):
     )
 
     title = models.CharField(max_length=500)
-    slug = models.SlugField(null=True, blank=True)
+    slug = models.SlugField(null=True, blank=True,max_length=100)
     author = models.ForeignKey(Author, on_delete=models.CASCADE, null=True)
     category = models.ManyToManyField('Category',related_name="course_category")
+    short_description = models.TextField(max_length=255,null=True)
     description = RichTextUploadingField()
     price = models.IntegerField(null=True, default=0)
     discounted_amount = models.IntegerField(null=True, default=0)
@@ -80,6 +81,21 @@ class Course(models.Model):
         return reverse('course:course-detail', kwargs={'slug': self.slug})
     
 
+class CourseGoal(models.Model):
+    course = models.ForeignKey(Course,on_delete=models.CASCADE,related_name="course_goals")
+    point = models.CharField(max_length=500)
+
+    def __str__(self):
+        return self.point
     
+class CourseRequirement(models.Model):
+    course = models.ForeignKey(Course,on_delete=models.CASCADE,related_name="course_requirements")
+    point = models.CharField(max_length=500)
+    
+
+    def __str__(self):
+        return self.point
+
+
 
 
