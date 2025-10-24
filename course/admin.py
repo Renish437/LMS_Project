@@ -13,6 +13,7 @@ class CategoryAdmin(admin.ModelAdmin):
             obj.slug = slugify(obj.name)
         super().save_model(request, obj, form, change)
 
+
 class CourseRequirementTabularInline(admin.TabularInline):
     model = CourseRequirement
 class CourseGoalTabularInline(admin.TabularInline):
@@ -51,3 +52,4 @@ admin.site.register(CourseRequirement)
 admin.site.register(CourseGoal)
 admin.site.register(CourseLesson)
 admin.site.register(CourseVideo)
+admin.site.register(Language)

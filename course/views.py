@@ -7,6 +7,7 @@ from django.db.models import Q,Count
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .models import *
 from django.utils.safestring import mark_safe
+from django.db.models import Sum
 # course/views.py
 
 
@@ -151,20 +152,22 @@ def filter_data(request):
 
 def course_detail(request, slug):
     course = get_object_or_404(Course, slug=slug)
-
+    
     try:
         rating = float(course.rating) if course.rating else 0
         course.rating_percentage = (rating/5)*100
     except (ValueError,TypeError):
         course.rating_percentage =0
+        
     
     
     
     course.description = mark_safe(course.description)
     
-    
+    time_duration = CourseVideo.objects.filter(course__slug=slug).aggregate(sum=Sum('time_duration'))
     context = {
         "course": course,
+        "time_duration":time_duration
    
     }
     return render(request, 'course/course-detail.html', context)

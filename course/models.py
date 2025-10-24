@@ -28,7 +28,11 @@ class Level(models.Model):
     
     def __str__(self):
         return self.name 
-
+class Language(models.Model):
+    language = models.CharField(max_length=100)
+    
+    def __str__(self):
+        return self.language
 
     
 class Course(models.Model):
@@ -44,7 +48,7 @@ class Course(models.Model):
 
     title = models.CharField(max_length=500)
     slug = models.SlugField(null=True, blank=True,max_length=100)
-    author = models.ForeignKey(Author, on_delete=models.CASCADE, null=True)
+    author = models.ForeignKey(Author, on_delete=models.CASCADE, null=True,related_name="course_author")
     category = models.ManyToManyField('Category',related_name="course_category")
     short_description = models.TextField(max_length=255,null=True)
     description = RichTextUploadingField()
@@ -57,6 +61,7 @@ class Course(models.Model):
     featured_video = models.CharField(max_length=500, null=True, blank=True)
     review_count = models.IntegerField(null=True, blank=True)
     lesson_count = models.IntegerField(null=True, blank=True)
+    
    
     rating = models.DecimalField(
         max_digits=2,             
@@ -68,6 +73,9 @@ class Course(models.Model):
             MaxValueValidator(5.0)
         ]
     )
+    language = models.ForeignKey(Language,on_delete=models.CASCADE,null=True)
+    deadline = models.DateField(null=True)
+    certificate =models.BooleanField(default=True) 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     class Meta:

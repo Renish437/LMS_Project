@@ -4,12 +4,12 @@
                         <div class="d-flex align-items-center mb-6">
                             <div class="d-inline-block rounded-circle border me-6 p-2">
                                 <div class="avatar avatar-size-120">
-                                    <img src="{% static 'assets/img/avatars/avatar-2.jpg'%}" alt="..." class="avatar-img rounded-circle">
+                                    <img src="{{course.author.author_profile.url}}" alt="..." class="avatar-img rounded-circle">
                                 </div>
                             </div>
                             <div class="media-body">
-                                <h4 class="mb-0">Lauren Handerson</h4>
-                                <span>iOS Developer & UI Designer</span>
+                                <h4 class="mb-0"> {{course.author.name}} </h4>
+                                <span> {{course.author.author_role}} </span>
                             </div>
                         </div>
 
@@ -23,7 +23,7 @@
                                         </svg>
 
                                     </div>
-                                    4.87 Instructor rating
+                                   {{course.author.author_rating}} Instructor rating
                                 </div>
                             </div>
 
@@ -36,7 +36,7 @@
                                         </svg>
 
                                     </div>
-                                    1,533 reviews
+                                   {{course.author.author_reviews}} reviews
                                 </div>
                             </div>
 
@@ -48,7 +48,7 @@
                                         </svg>
 
                                     </div>
-                                    23,912 students
+                                   {{course.author.author_students}} students
                                 </div>
                             </div>
 
@@ -61,10 +61,12 @@
                                         </svg>
 
                                     </div>
-                                    29 courses
+                                    {{course.author.course_author.count}} courses
                                 </div>
                             </div>
                         </div>
 
-                        <p class="mb-6 line-height-md">I am a UI/UX designer and an iOS developer with having almost six years of experience in application development and also ten years of graphic design and User Interface design.</p>
-                        <p class="mb-6 line-height-md">My passion is helping people to learn new skills in a short-term course and achieve their goals. I've been designing for more than ten years and developing iOS apps for four years. It's my honor if I could help you learn to program in a simple word. I currently am teaching iOS 13, Swift 5, ARKit 3, Sketch 5, Illustrator, Photoshop, Cinema 4D, HTML, CSS, JavaScript, etc.</p>
+                        <p class="mb-6 line-height-md">
+                            {{course.author.about_author|safe}}
+                        </p>
+                        
