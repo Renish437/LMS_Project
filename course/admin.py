@@ -17,6 +17,9 @@ class CourseRequirementTabularInline(admin.TabularInline):
     model = CourseRequirement
 class CourseGoalTabularInline(admin.TabularInline):
     model = CourseGoal
+    
+class CourseVideoTabularInline(admin.TabularInline):
+    model = CourseVideo
 
 
     
@@ -24,7 +27,7 @@ class CourseGoalTabularInline(admin.TabularInline):
 class CourseAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("title",)}
     list_display = ('id', 'title', 'slug', 'status')
-    inlines = (CourseGoalTabularInline,CourseRequirementTabularInline)
+    inlines = (CourseGoalTabularInline,CourseRequirementTabularInline,CourseVideoTabularInline)
 
     def save_model(self, request, obj, form, change):
         # Auto-update slug if title changed or slug is blank
@@ -44,8 +47,7 @@ class CourseAdmin(admin.ModelAdmin):
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Course, CourseAdmin)
 admin.site.register(Level)
-
-
-    
 admin.site.register(CourseRequirement)
 admin.site.register(CourseGoal)
+admin.site.register(CourseLesson)
+admin.site.register(CourseVideo)

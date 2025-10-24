@@ -97,5 +97,33 @@ class CourseRequirement(models.Model):
         return self.point
 
 
+class CourseLesson(models.Model):
+    name = models.CharField(max_length=200)
+    course = models.ForeignKey(Course,on_delete=models.CASCADE,related_name="course_lessons")
+    
+    
+
+    def __str__(self):
+        return self.name + "-"+self.course.title
+
+class CourseVideo(models.Model):
+    serial_number = models.IntegerField(null=True)
+    title = models.CharField(max_length=100)
+    course = models.ForeignKey(Course,on_delete=models.CASCADE,related_name="course_videos")
+    lesson = models.ForeignKey(CourseLesson,on_delete=models.CASCADE,related_name="lesson_videos")
+    thumbnail = models.ImageField(upload_to="uploads/courses/youtube-thumbnails", null=True, blank=True)
+    youtube_id = models.CharField(max_length=200)
+    time_duration = models.FloatField(null=True)
+    preview = models.BooleanField(default=False)
+    
+
+    def __str__(self):
+        return self.title
+
+
+
+
+
+
 
 
