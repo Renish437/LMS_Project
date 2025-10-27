@@ -1,6 +1,6 @@
 # course/views.py
 import logging
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404,redirect
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 from django.db.models import Q,Count
@@ -8,6 +8,8 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .models import *
 from django.utils.safestring import mark_safe
 from django.db.models import Sum
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 # course/views.py
 
 
@@ -40,8 +42,8 @@ def course_list(request,slug=None):
     # Fixed annotations: Use correct reverse related names from models/error
     course_categories = Category.objects.filter(is_active=True).annotate(course_count=Count('course_category'))  # M2M reverse
     levels = Level.objects.annotate(course_count=Count('course_level'))  # FK reverse
-    instructors = Author.objects.annotate(course_count=Count('course'))  # Explicit related_name='course' on FK
-
+    # Explicit related_name='course' on FK
+    instructors = Author.objects.annotate(course_count=Count('course_author'))
     free_count = Course.objects.filter(price=0).count()
     paid_count = Course.objects.filter(price__gte=1).count()
 
@@ -159,15 +161,18 @@ def course_detail(request, slug):
     except (ValueError,TypeError):
         course.rating_percentage =0
         
-    
-    
+    is_enroll=False
+    if request.user.is_authenticated:
+        is_enroll = EnrolledCourse.objects.filter(user=request.user,course=course).exists()
+        
     
     course.description = mark_safe(course.description)
     
     time_duration = CourseVideo.objects.filter(course__slug=slug).aggregate(sum=Sum('time_duration'))
     context = {
         "course": course,
-        "time_duration":time_duration
+         "time_duration":time_duration,
+         "is_enroll":is_enroll
    
     }
     return render(request, 'course/course-detail.html', context)
@@ -186,3 +191,21 @@ def search_course(request):
     }
 
     return render(request, 'course/search-course.html',context)
+
+
+@login_required
+def checkout(request, slug):
+    course = get_object_or_404(Course, slug=slug)
+    
+    
+    if course.price == 0:
+        EnrolledCourse.objects.get_or_create(
+            user=request.user,  # logged-in user
+            course=course,
+        )
+        course.save()
+        messages.success(request, "Enrolled course successfully!")
+        return redirect('home')
+        
+    return render(request, 'course/checkout.html', {'course': course})
+        

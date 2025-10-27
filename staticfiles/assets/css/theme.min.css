@@ -35,7 +35,7 @@
   --bs-gray-800: #77838f;
   --bs-white: #ffffff;
   --bs-dark: #2f2d51;
-  --bs-success: #def2d7;
+  --bs-success: #52e61c;
   --bs-info: #cde9f6;
   --bs-warning: #f7f3d7;
   --bs-danger: #ecc8c5;
@@ -21870,12 +21870,12 @@ a.badge-dark:focus {
 }
 .badge-success {
   color: color-yiq(#def2d7);
-  background-color: #def2d7;
+  background-color:#52e61c;
 }
 a.badge-success:focus,
 a.badge-success:hover {
   color: color-yiq(#def2d7);
-  background-color: #bee5b1;
+  background-color: #52e61c;
 }
 a.badge-success.focus,
 a.badge-success:focus {

@@ -17,9 +17,15 @@
                   <a href="{{course.get_url}}" class="card-img sk-thumbnail img-ratio-9 d-block">
                     <img class="rounded shadow-light-lg" src="{{ course.featured_image.url|default:'/static/assets/img/products/placeholder.jpg' }}" alt="{{ course.title }}" />
                   </a>
-                  <span class="badge sk-fade-bottom badge-lg badge-gigas badge-pill badge-float bottom-0 left-0 mb-4 ms-4">
+                 {% if course.price == 0 %}
+                   <span class="badge sk-fade-bottom badge-lg badge-teal badge-pill badge-float bottom-0 left-0 mb-4 ms-4">
+                    <span class="text-white text-uppercase fw-bold font-size-xs">Free</span>
+                  </span>
+                 {% else %}
+                    <span class="badge sk-fade-bottom badge-lg badge-gigas badge-pill badge-float bottom-0 left-0 mb-4 ms-4">
                     <span class="text-white text-uppercase fw-bold font-size-xs">Discount: {{ course.discount }}%</span>
                   </span>
+                 {% endif %}
                 </div>
                 <div class="card-footer px-2 pb-2 mb-1 pt-4 position-relative">
                   <a href="#" class="d-block">
@@ -75,8 +81,17 @@
                             </ul>
                           </div>
                           <div class="col-auto px-2 text-right">
-                            <del class="font-size-sm">${{ course.price }}</del>
+
+                              {% if course.price == 0 %}
+                   <span class="badge badge-lg badge-teal badge-pill  mb-4 ms-4">
+                    <span class="text-white text-uppercase fw-bold font-size-xs">Free</span>
+                  </span>
+                 {% else %}
+ <del class="font-size-sm">${{ course.price }}</del>
                             <ins class="h4 mb-0 d-block mb-lg-n1">${{ course.price|discount_calculation:course.discount }}</ins>
+                  </span>
+                 {% endif %}
+                           
                           </div>
                         </div>
                       </div>

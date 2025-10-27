@@ -87,6 +87,8 @@ class Course(models.Model):
         return self.title
     def get_url(self):
         return reverse('course:course-detail', kwargs={'slug': self.slug})
+    def get_checkout_url(self):
+        return reverse('course:checkout',kwargs={'slug': self.slug})
     
 
 class CourseGoal(models.Model):
@@ -127,6 +129,17 @@ class CourseVideo(models.Model):
 
     def __str__(self):
         return self.title
+    
+class EnrolledCourse(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    course = models.ForeignKey(Course,on_delete=models.CASCADE)
+    paid = models.BooleanField(default=0)
+    enroll_type = models.CharField(max_length=100,null=True,default="Free") # Stripe, RazorPay,Paypal,Free
+    enrolled_at = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return self.user.username+ " - "+ self.course.title
+    
 
 
 

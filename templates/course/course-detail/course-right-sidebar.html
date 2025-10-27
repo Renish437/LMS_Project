@@ -12,14 +12,21 @@
                     </a>
 
                     <div class="pt-5 pb-4 px-5 px-lg-3 px-xl-5">
-                        <div class="d-flex align-items-center mb-2">
-                            <ins class="h2 mb-0">${{ course.price|discount_calculation:course.discount }}</ins>
+                        {% if course.price == 0 %}
+                        <div class="d-flex align-items-center justify-content-between mb-2">
+                              <ins class="h2 mb-0 text-gigas"> Enroll For Free </ins>
+                               <div class="badge badge-lg badge-gigas text-white  fw-normal"> Free</div>
+                               </div>
+                             {% else %}
+                              <div class="d-flex align-items-center mb-2">
+                              <ins class="h2 mb-0">${{ course.price|discount_calculation:course.discount }}</ins>
                             <del class="ms-3">{{ course.price }}</del>
                             <div class="badge badge-lg badge-purple text-white ms-auto fw-normal"> {{course.discount}}% Off</div>
                         </div>
+                           {% endif %}
 
-                        <div class="d-flex align-items-center text-alizarin mb-6">
-                            <!-- Icon -->
+                        <!-- <div class="d-flex align-items-center text-alizarin mb-6">
+                           
                             <svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M9.99974 3.0083C5.79444 3.0083 2.37305 6.42973 2.37305 10.635C2.37305 14.8405 5.79448 18.2619 9.99974 18.2619C14.2053 18.2619 17.6264 14.8405 17.6264 10.635C17.6264 6.42973 14.205 3.0083 9.99974 3.0083ZM9.99974 16.8797C6.55666 16.8797 3.7555 14.0783 3.7555 10.6353C3.7555 7.19219 6.55662 4.39103 9.99974 4.39103C13.4428 4.39103 16.244 7.19219 16.244 10.6353C16.244 14.0785 13.4428 16.8797 9.99974 16.8797Z" fill="currentColor"/>
                                 <path d="M12.1193 10.4048H10.2761V7.73202C10.2761 7.35022 9.9666 7.04077 9.5848 7.04077C9.20301 7.04077 8.89355 7.35022 8.89355 7.73202V11.0961C8.89355 11.4779 9.20301 11.7873 9.5848 11.7873H12.1194C12.5012 11.7873 12.8106 11.4779 12.8106 11.0961C12.8106 10.7143 12.5011 10.4048 12.1193 10.4048Z" fill="currentColor"/>
@@ -30,10 +37,16 @@
                             </svg>
 
                             <span class="ms-2">2 days left at this price!</span>
-                        </div>
+                        </div> -->
 
-                        <button class="btn btn-primary btn-block mb-3" type="button" name="button">BUY NOW</button>
-                        <button class="btn btn-orange btn-block mb-6" type="button" name="button">ENROLL</button>
+                       {% if is_enroll %}
+                       <button class="btn btn-orange btn-block mb-6" type="button" name="button" disabled >ALREADY ENROLLED</button>
+                    {% else %}
+ <a href="{{course.get_checkout_url}}" class="btn btn-gigas btn-block mt-4 mb-6"   name="buy-now">
+                        ENROLL NOW
+                    </a>
+                       {% endif %}
+                        
 
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item d-flex align-items-center py-3">
