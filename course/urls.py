@@ -15,5 +15,6 @@ urlpatterns = [
     path('category/<slug:slug>/', views.course_list, name='course-by-category'),
     
     path('search',views.search_course,name="search-course"),
-    path('checkout/<slug:slug>',views.checkout,name="checkout")
+    path('checkout/<slug:slug>',views.checkout,name="checkout"),
+    path('my-courses',views.my_courses,name="my-courses")
 ]

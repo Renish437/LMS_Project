@@ -1,5 +1,6 @@
 from course.models import *
 from accounts.models import *
+from django.db.models import Sum
 def course_categories(request):
     course_categories = Category.objects.filter(is_active=True)
     return dict(course_categories=course_categories)

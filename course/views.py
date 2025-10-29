@@ -208,4 +208,14 @@ def checkout(request, slug):
         return redirect('home')
         
     return render(request, 'course/checkout.html', {'course': course})
+
+
+def my_courses(request):
+    
+    enrolled_courses = EnrolledCourse.objects.filter(user=request.user)
+    courses = [enrolled.course for enrolled in enrolled_courses]
+    context={
+      'enrolled_courses' :courses 
+    }
+    return render(request,'course/my-courses.html',context)
         

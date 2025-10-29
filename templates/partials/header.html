@@ -283,6 +283,9 @@
          <a href="{%url 'profile_update'%}"><strong>My Profile</strong></a>
         </li>
         <li><hr class="dropdown-divider"></li>
+        <li class="dropdown-item ">
+         <a href="{%url 'course:my-courses'%}"><strong>My Courses</strong></a>
+        </li>
         <li>
          <form method="post" action="{% url 'logout' %}">
     {% csrf_token %}
