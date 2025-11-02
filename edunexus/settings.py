@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
-from .secrets import EMAIL_HOST_USER, EMAIL_HOST_PASSWORD
+from .secrets import EMAIL_HOST_USER, EMAIL_HOST_PASSWORD,STRIPE_KEY,STRIPE_SECRET
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,6 +25,7 @@ SECRET_KEY = 'django-insecure-qr9znt*+r52p#p0kk9hvjaty^9@-l=1y)7n=a1p^!l6bmuu0ao
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+APP_URL = "http://127.0.0.1:8000"
 
 ALLOWED_HOSTS = ["*"]
 
@@ -164,6 +165,9 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = EMAIL_HOST_USER or ""
 EMAIL_HOST_PASSWORD = EMAIL_HOST_PASSWORD or ""  # your Gmail App Password
+
+STRIPE_KEY= STRIPE_KEY or ""
+STRIPE_SECRET = STRIPE_SECRET or ""
 
 
 CKEDITOR_UPLOAD_PATH = "uploads/"  # folder inside MEDIA_ROOT

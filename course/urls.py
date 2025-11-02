@@ -16,5 +16,7 @@ urlpatterns = [
     
     path('search',views.search_course,name="search-course"),
     path('checkout/<slug:slug>',views.checkout,name="checkout"),
-    path('my-courses',views.my_courses,name="my-courses")
+    path('my-courses/',views.my_courses,name="my-courses"),
+    path("success/", views.success, name="success"),
+    path("cancel/", views.cancel, name="cancel"),
 ]

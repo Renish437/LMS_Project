@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+  EduNexus - Payment Cancelled
+{% endblock title %}
+{% block content %}
+  <div class="container my-10 text-center">
+    <!-- Cancel Illustration -->
+    <img src="{% static 'assets/img/illustrations/illustration-2.png' %}" 
+         alt="Cancelled" 
+         class="img-fluid mb-5 mb-md-9" 
+         style="max-width: 300px;">
+
+    <h1 class="display-6 text-danger">Payment Cancelled</h1>
+
+    {% if course %}
+      <p class="mb-4">Your payment for <strong>{{ course.title }}</strong> was cancelled. You can try again to complete your course purchase.</p>
+    {% else %}
+      <p class="mb-4">Your payment was cancelled. You can try again to complete your course purchase.</p>
+    {% endif %}
+
+    <a href="{% url 'course:course-list' %}" class="btn btn-danger btn-sm">Try Again</a>
+    <br><br>
+    <a href="{% url 'home' %}" class="text-blue text-underline d-inline-block mt-3">Back to Home</a>
+  </div>
+{% endblock content %}
