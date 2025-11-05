@@ -44,10 +44,41 @@
                                                <i class="fa-solid fa-play text-gigas"></i>
 
                                             </div>
+                                           {% if is_enroll %}
+    <!-- If user is enrolled -->
+    <a href="#" data-toggle="tooltip" data-placement="top" title="Click and show the video" class="ms-4">
+        {{ video.title }}
+    </a>
+{% elif video.preview %}
+    <!-- If video is preview and user not enrolled -->
+<a href="https://www.youtube.com/watch?v={{ video.youtube_id }}" 
+   target="_blank" 
+   rel="noopener noreferrer"
+   class="ms-4 text-blue-600 hover:underline"
+   title="Watch on YouTube">
+   {{ video.title }}
+</a>
+<!-- <a data-fancybox
+   data-type="iframe"
+   href="https://www.youtube.com/embed/{{ video.youtube_id }}?autoplay=1"
+   class="ms-4 text-blue-600 hover:underline"
+   title="Watch on YouTube">
+   {{ video.title }}
+</a> -->
 
-                                            <div class="ms-4">
-                                                {{video.title}}
-                                            </div>
+
+
+
+
+{% else %}
+    <!-- Not enrolled and not a preview -->
+    <span class="ms-4" data-toggle="tooltip" data-placement="top" title="Enroll the course first">
+        {{ video.title }}
+    </span>
+{% endif %}
+
+
+                                           
                                         </div>
 
                                         <div class="d-flex align-items-center overflow-auto overflow-md-visible flex-shrink-all">

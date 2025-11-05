@@ -132,7 +132,7 @@ class CourseVideo(models.Model):
     
 class EnrolledCourse(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
-    course = models.ForeignKey(Course,on_delete=models.CASCADE)
+    course = models.ForeignKey(Course,on_delete=models.CASCADE,related_name="enrolled_course")
     paid = models.BooleanField(default=0)
     enroll_type = models.CharField(max_length=100,null=True,default="Free") # Stripe, RazorPay,Paypal,Free
     enrolled_at = models.DateTimeField(auto_now_add=True)
