@@ -89,6 +89,10 @@ class Course(models.Model):
         return reverse('course:course-detail', kwargs={'slug': self.slug})
     def get_checkout_url(self):
         return reverse('course:checkout',kwargs={'slug': self.slug})
+    def get_watch_url(self):
+       return reverse('course:watch-course', kwargs={'slug': self.slug}) + f'?lecture={self.id}'
+
+      
     
 
 class CourseGoal(models.Model):
@@ -129,6 +133,8 @@ class CourseVideo(models.Model):
 
     def __str__(self):
         return self.title
+    def get_watch_url(self):
+       return reverse('course:watch-course', kwargs={'slug': self.lesson.course.slug}) + f'?lecture={self.id}'
     
 class EnrolledCourse(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
@@ -149,6 +155,7 @@ class Payment(models.Model):
     course = models.ForeignKey(Course,on_delete=models.CASCADE,null=True)
     date = models.DateTimeField(auto_now_add=True)
     status = models.BooleanField(default=False)
+    
     
     def __str__(self):
         return self.user.username + '--'+self.course.title 

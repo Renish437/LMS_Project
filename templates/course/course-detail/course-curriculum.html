@@ -46,18 +46,17 @@
                                             </div>
                                            {% if is_enroll %}
     <!-- If user is enrolled -->
-    <a href="#" data-toggle="tooltip" data-placement="top" title="Click and show the video" class="ms-4">
+    <a href="{{video.get_watch_url}}" data-toggle="tooltip" data-placement="top" title="Click and show the video" class="ms-4">
         {{ video.title }}
     </a>
 {% elif video.preview %}
     <!-- If video is preview and user not enrolled -->
-<a href="https://www.youtube.com/watch?v={{ video.youtube_id }}" 
-   target="_blank" 
-   rel="noopener noreferrer"
-   class="ms-4 text-blue-600 hover:underline"
-   title="Watch on YouTube">
-   {{ video.title }}
-</a>
+  <a href="#" 
+       class="ms-4 text-blue-600 hover:underline video-preview" 
+       data-video-id="{{ video.youtube_id }}"
+       title="Watch on YouTube">
+       {{ video.title }}
+    </a>
 <!-- <a data-fancybox
    data-type="iframe"
    href="https://www.youtube.com/embed/{{ video.youtube_id }}?autoplay=1"

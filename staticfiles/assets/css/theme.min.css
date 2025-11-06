@@ -13848,6 +13848,13 @@ form.woocommerce-checkout .place-order .placeholder.button::before {
   --bs-bg-opacity: 1;
   background-color: rgba(var(--bs-black-rgb), var(--bs-bg-opacity)) !important;
 }
+.bg-gray-100 {
+  --bs-bg-opacity: 1;
+  background-color: rgba(
+    var(--bs-gray-100-rgb),
+    var(--bs-bg-opacity)
+  ) !important;
+}
 .bg-gray-200 {
   --bs-bg-opacity: 1;
   background-color: rgba(

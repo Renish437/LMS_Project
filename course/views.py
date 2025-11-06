@@ -359,6 +359,47 @@ def my_courses(request):
 
 
 
+def watch_course(request, slug):
+    course = get_object_or_404(Course, slug=slug)
+    lecture_id = request.GET.get('lecture')
+
+    if lecture_id:
+        # Get specific video and its lesson
+        current_video = get_object_or_404(CourseVideo, id=lecture_id, lesson__course=course)
+        current_lesson = current_video.lesson
+    else:
+        # Default to first video of first lesson
+        first_lesson = course.course_lessons.first()
+        current_video = first_lesson.lesson_videos.first() if first_lesson else None
+        current_lesson = first_lesson
+
+    try:
+        rating = float(course.rating or 0)
+    except (ValueError, TypeError):
+        rating = 0
+
+    course.rating_percentage = (rating / 5) * 100 if rating else 0
+
+    is_enroll = False
+    if request.user.is_authenticated:
+        is_enroll = EnrolledCourse.objects.filter(user=request.user, course=course).exists()
+
+    course.description = mark_safe(course.description)
+
+    total_time_duration = CourseVideo.objects.filter(lesson__course=course).aggregate(
+        total_sum=Sum('time_duration')
+    )['total_sum'] or 0
+
+    context = {
+        "course": course,
+        "current_video": current_video,
+        "current_lesson": current_lesson,
+        "is_enroll": is_enroll,
+        "time_duration": total_time_duration,
+    }
+    return render(request, 'course/watch-course.html', context)
+
+
 
 
         

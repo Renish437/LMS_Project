@@ -25,8 +25,8 @@ SECRET_KEY = 'django-insecure-qr9znt*+r52p#p0kk9hvjaty^9@-l=1y)7n=a1p^!l6bmuu0ao
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-APP_URL = "http://127.0.0.1:8000"
-
+# APP_URL = "http://127.0.0.1:8000"
+APP_URL = "https://holistically-unejective-bradley.ngrok-free.dev"
 ALLOWED_HOSTS = ["*"]
 
 

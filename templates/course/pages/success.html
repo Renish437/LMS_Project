@@ -1,19 +1,19 @@
- {% extends 'base.html' %}
+{% extends 'base.html' %}
 {% load static %}
- {% block title %}
-  EduNexus-Success
-  {% endblock title %}
+{% block title %} Payment Success - EduNexus {% endblock title %}
+
 {% block content %}
-  <div class="container my-10 text-center">
-    <!-- Success Illustration -->
-    <img src="{% static 'assets/img/illustrations/illustration-5.svg' %}" alt="Success" class="img-fluid mb-5 mb-md-9" style="max-width: 300px;">
+<div class="container my-10 text-center">
+    <img src="{% static 'assets/img/illustrations/illustration-5.svg' %}" 
+         alt="Success" class="img-fluid mb-5" style="max-width: 300px;">
 
     <h1 class="display-6 text-success">Payment Successful!</h1>
-    <p class="mb-4">Thank you for your purchase. Your course access has been activated successfully.</p>
+    <p class="mb-2">Thank you, {{ user.first_name|default:user.username }}!</p>
+    <p class="mb-4">Your access to <strong>{{ course.title }}</strong> has been activated successfully.</p>
 
-    <a href="{% url 'course:my-courses'%}" class="btn btn-gigas btn-sm">Go to My Courses</a>
+    <a href="{% url 'course:my-courses' %}" class="btn btn-gigas btn-sm">Go to My Courses</a>
     <br><br>
     <a href="{% url 'home' %}" class="text-blue text-underline d-inline-block mt-3">Back to Home</a>
-  </div>
+</div>
 {% endblock content %}
  
