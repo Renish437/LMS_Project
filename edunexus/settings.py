@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 from .secrets import EMAIL_HOST_USER, EMAIL_HOST_PASSWORD,STRIPE_KEY,STRIPE_SECRET
+from django.utils.translation import gettext_lazy as _
+from django.templatetags.static import static
+from django.urls import reverse_lazy
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -30,9 +33,13 @@ APP_URL = "https://holistically-unejective-bradley.ngrok-free.dev"
 ALLOWED_HOSTS = ["*"]
 
 
+
 # Application definition
 
 INSTALLED_APPS = [
+    'unfold',
+    "unfold.contrib.import_export",
+    "unfold.contrib.filters",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -48,6 +55,7 @@ INSTALLED_APPS = [
       
          "ckeditor",
            "ckeditor_uploader",
+    'import_export'
     
 ]
   
@@ -186,3 +194,264 @@ CKEDITOR_CONFIGS = {
         ],
     },
 }
+
+UNFOLD = {
+    "SITE_TITLE": "EduNexus",
+    "SITE_HEADER": "EduNexus Admin",
+    "SITE_SUBHEADER": "Providing online education",
+     "SITE_DROPDOWN": [
+        {
+            "icon": "diamond",
+            "title": _("Goto Website"),
+            "link": "http://127.0.0.1:8000",
+        },
+        # ...
+    ],
+      "SITE_SYMBOL": "speed",
+      
+      
+        "COLORS": {
+        "base": {
+            "50": "oklch(98.5% .002 247.839)",
+            "100": "oklch(96.7% .003 264.542)",
+            "200": "oklch(92.8% .006 264.531)",
+            "300": "oklch(87.2% .01 258.338)",
+            "400": "oklch(70.7% .022 261.325)",
+            "500": "oklch(55.1% .027 264.364)",
+            "600": "oklch(44.6% .03 256.802)",
+            "700": "oklch(37.3% .034 259.733)",
+            "800": "oklch(27.8% .033 256.848)",
+            "900": "oklch(21% .034 264.665)",
+            "950": "oklch(13% .028 261.692)",
+        },
+        "primary": {
+            "50": "oklch(97.7% .014 308.299)",
+            "100": "oklch(94.6% .033 307.174)",
+            "200": "oklch(90.2% .063 306.703)",
+            "300": "oklch(82.7% .119 306.383)",
+            "400": "oklch(71.4% .203 305.504)",
+            "500": "oklch(62.7% .265 303.9)",
+            "600": "oklch(55.8% .288 302.321)",
+            "700": "oklch(49.6% .265 301.924)",
+            "800": "oklch(43.8% .218 303.724)",
+            "900": "oklch(38.1% .176 304.987)",
+            "950": "oklch(29.1% .149 302.717)",
+        },
+# "primary": {
+#   "50":  "oklch(97% 0.02 160)",
+#   "100": "oklch(94% 0.05 160)",
+#   "200": "oklch(89% 0.09 160)",
+#   "300": "oklch(82% 0.15 160)",
+#   "400": "oklch(73% 0.20 160)",
+#   "500": "oklch(64% 0.23 160)",
+#   "600": "oklch(56% 0.21 160)",
+#   "700": "oklch(48% 0.18 160)",
+#   "800": "oklch(41% 0.15 160)",
+#   "900": "oklch(35% 0.12 160)",
+#   "950": "oklch(27% 0.09 160)"
+# },
+
+# "primary": {
+#   "50":  "oklch(97% 0.02 290)",
+#   "100": "oklch(94% 0.05 290)",
+#   "200": "oklch(89% 0.10 290)",
+#   "300": "oklch(82% 0.17 290)",
+#   "400": "oklch(73% 0.23 290)",
+#   "500": "oklch(64% 0.27 290)",
+#   "600": "oklch(56% 0.25 290)",
+#   "700": "oklch(48% 0.22 290)",
+#   "800": "oklch(41% 0.18 290)",
+#   "900": "oklch(35% 0.14 290)",
+#   "950": "oklch(27% 0.11 290)"
+# },
+
+# "primary": {
+#   "50":  "oklch(97% 0.02 220)",
+#   "100": "oklch(94% 0.05 220)",
+#   "200": "oklch(89% 0.10 220)",
+#   "300": "oklch(82% 0.16 220)",
+#   "400": "oklch(74% 0.21 220)",
+#   "500": "oklch(65% 0.24 220)",
+#   "600": "oklch(57% 0.22 220)",
+#   "700": "oklch(49% 0.19 220)",
+#   "800": "oklch(42% 0.15 220)",
+#   "900": "oklch(36% 0.12 220)",
+#   "950": "oklch(28% 0.09 220)"
+# },
+# "primary": {
+#   "50":  "oklch(98% 0.03 135)",
+#   "100": "oklch(95% 0.06 135)",
+#   "200": "oklch(90% 0.12 135)",
+#   "300": "oklch(82% 0.19 135)",
+#   "400": "oklch(73% 0.26 135)",
+#   "500": "oklch(65% 0.30 135)",
+#   "600": "oklch(57% 0.27 135)",
+#   "700": "oklch(48% 0.23 135)",
+#   "800": "oklch(41% 0.18 135)",
+#   "900": "oklch(35% 0.14 135)",
+#   "950": "oklch(27% 0.10 135)"
+# },
+
+
+
+        "font": {
+            "subtle-light": "var(--color-base-500)",  # text-base-500
+            "subtle-dark": "var(--color-base-400)",  # text-base-400
+            "default-light": "var(--color-base-600)",  # text-base-600
+            "default-dark": "var(--color-base-300)",  # text-base-300
+            "important-light": "var(--color-base-900)",  # text-base-900
+            "important-dark": "var(--color-base-100)",  # text-base-100
+        },
+    },
+        
+        
+   "SIDEBAR": {
+    "show_search": True,
+    "command_search": True,
+    "show_all_applications": True,
+    "navigation": [
+        {
+            "title": _("Navigation"),
+            "separator": True,
+            "items": [
+                {
+                    "title": _("Dashboard"),
+                    "icon": "dashboard",
+                    "link": reverse_lazy("admin:index"),
+                },
+                {
+                    "title": _("Slider"),
+                    "icon": "insights",
+                    "link": reverse_lazy("admin:home_slider_changelist"),
+                },
+              
+            ],
+        },
+          {
+            "title": _("Users"),
+            "icon": "school",
+            "collapsible": True,
+             "expanded": True,
+            "items": [
+               {
+                    "title": _("Users"),
+                    "icon": "people",
+                    "link": reverse_lazy("admin:auth_user_changelist"),
+                },
+          
+                {
+                    "title": _("Group"),
+                    "icon": "admin_panel_settings",
+                    "link": reverse_lazy("admin:auth_group_changelist"),
+                },
+                
+            ]
+          },
+
+        # 🔽 COURSES COLLAPSIBLE GROUP
+        {
+            "title": _("Courses"),
+            "icon": "school",
+            "collapsible": True,
+             "expanded": True,
+            "items": [
+                {
+                    "title": _("All Courses"),
+                    "icon": "menu_book",
+                    "link": reverse_lazy("admin:course_course_changelist"),
+                },
+                {
+                    "title": _("Lessons"),
+                    "icon": "play_lesson",
+                    "link": reverse_lazy("admin:course_courselesson_changelist"),
+                },
+                {
+                    "title": _("Videos"),
+                    "icon": "video_library",
+                    "link": reverse_lazy("admin:course_coursevideo_changelist"),
+                },
+                {
+                    "title": _("Enrollments"),
+                    "icon": "how_to_reg",
+                    "link": reverse_lazy("admin:course_enrolledcourse_changelist"),
+                },
+            ],
+        },
+        {
+            "title": _("Orders"),
+            "icon": "school",
+            "collapsible": True,
+             "expanded": True,
+            "items": [
+               {
+                    "title": _("Orders"),
+                    "icon": "monitoring",
+                    "link": reverse_lazy("admin:course_payment_changelist"),
+                },
+                 {
+                    "title": _("Enrolled Courses"),
+                    "icon": "menu_book",
+                    "link": reverse_lazy("admin:course_enrolledcourse_changelist"),
+                },
+           
+            ]
+          },
+  {
+            "title": _("Others"),
+            "icon": "settings",
+            "collapsible": True,
+            "expanded": True,
+            "items": [
+                {
+                    "title": _("Levels"),
+                    "icon": "menu_book",
+                    "link": reverse_lazy("admin:course_level_changelist"),
+                },
+                {
+                    "title": _("Languages"),
+                    "icon": "language",
+                    "link": reverse_lazy("admin:course_language_changelist"),
+                },
+                {
+                    "title": _("Goals"),
+                    "icon": "flag",
+                    "link": reverse_lazy("admin:course_coursegoal_changelist"),
+                },
+                {
+                    "title": _("Requirements"),
+                    "icon": "assignment",
+                    "link": reverse_lazy("admin:course_courserequirement_changelist"),
+                },
+            ],
+        },
+
+    ],
+},
+
+    
+
+        
+"TABS": [
+    {
+        "models": [
+            "course.course",
+            "course.coursevideo",
+            "course.courselesson",
+        ],
+        "items": [
+            {
+                "title": _("All Courses"),
+                "link": reverse_lazy("admin:course_course_changelist"),
+            },
+        ],
+    },
+],
+
+
+
+        
+}
+
+def badge_callback(request):
+    return 3
+
