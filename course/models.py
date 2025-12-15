@@ -143,8 +143,8 @@ class EnrolledCourse(models.Model):
     enroll_type = models.CharField(max_length=100,null=True,default="Free") # Stripe, RazorPay,Paypal,Free
     enrolled_at = models.DateTimeField(auto_now_add=True)
     
-    def __str__(self):
-        return self.user.username+ " - "+ self.course.title
+    # def __str__(self):
+    #     return self.user.username+ " - "+ self.course.title
     
     
 class Payment(models.Model):
@@ -156,9 +156,7 @@ class Payment(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     status = models.BooleanField(default=False)
     
-    
-    def __str__(self):
-        return self.user.username + '--'+self.course.title 
+
     
     
     

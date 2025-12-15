@@ -13,9 +13,12 @@ from .forms import UserUpdateForm, PasswordChangeForm
 
 
 def register(request):
+    if request.user.is_authenticated:
+        return redirect('home')  # Redirect authenticated users to home
     # Initialize context with empty defaults
+    
     context = {'username': '', 'email': ''}
-
+    
     if request.method == "POST":
         username = request.POST.get('username', '')
         email = request.POST.get('email', '')
@@ -55,6 +58,8 @@ def register(request):
 
 
 def login(request):
+    if request.user.is_authenticated:
+        return redirect('home')  # Redirect authenticated users to home
     context = {'username': ''}
 
     if request.method == "POST":
@@ -119,7 +124,7 @@ def profile_update(request):
         'active_tab': active_tab,
     })
 
-
+@login_required
 def logout_user(request):
     logout(request)  # This clears the session
     messages.success(request, "You have been logged out successfully.")

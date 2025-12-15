@@ -15,6 +15,9 @@ from .secrets import EMAIL_HOST_USER, EMAIL_HOST_PASSWORD,STRIPE_KEY,STRIPE_SECR
 from django.utils.translation import gettext_lazy as _
 from django.templatetags.static import static
 from django.urls import reverse_lazy
+from course.dashboard import CourseStatusChart
+import os
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,10 +30,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-qr9znt*+r52p#p0kk9hvjaty^9@-l=1y)7n=a1p^!l6bmuu0ao'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-# APP_URL = "http://127.0.0.1:8000"
-APP_URL = "https://holistically-unejective-bradley.ngrok-free.dev"
-ALLOWED_HOSTS = ["*"]
+
+DEBUG = True 
+ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
+APP_URL = "http://192.168.18.10:8000"
+#APP_URL = "https://holistically-unejective-bradley.ngrok-free.dev"
+
+
+
 
 
 
@@ -40,6 +47,10 @@ INSTALLED_APPS = [
     'unfold',
     "unfold.contrib.import_export",
     "unfold.contrib.filters",
+    # "django_light",
+    'admin_tools_stats',  # this must be BEFORE 'admin_tools' and 'django.contrib.admin'
+    'django_nvd3',
+    
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -361,6 +372,11 @@ UNFOLD = {
                     "link": reverse_lazy("admin:course_course_changelist"),
                 },
                 {
+                    "title": _("Categories"),
+                    "icon": "category",
+                    "link": reverse_lazy("admin:course_category_changelist"),
+                },
+                {
                     "title": _("Lessons"),
                     "icon": "play_lesson",
                     "link": reverse_lazy("admin:course_courselesson_changelist"),
@@ -447,6 +463,13 @@ UNFOLD = {
     },
 ],
 
+
+
+    "DASHBOARD": {
+        "widgets": [
+            CourseStatusChart,
+        ],
+    },
 
 
         

@@ -9,7 +9,13 @@ from unfold.admin import StackedInline, TabularInline
 class CategoryAdmin(ModelAdmin,ImportExportModelAdmin):
     
     prepopulated_fields = {"slug": ("name",)}
-    list_display = ('id', 'name', 'slug', 'is_active')
+    list_display = ('id', 'name', 'slug','parent_category', 'is_active')
+    list_filter_submit =True 
+    list_filter = (
+        'is_active',
+
+        )
+    
     import_form_class = ImportForm
     export_form_class = ExportForm
 
@@ -33,15 +39,37 @@ class CourseVideoTabularInline(StackedInline):
 
 class CourseAdmin(ModelAdmin,ImportExportModelAdmin):
     prepopulated_fields = {"slug": ("title",)}
-    list_display = ('id', 'title', 'slug', 'status')
+    
+    list_display = (
+        'id',
+        'title',
+        'author',
+        'price',
+        'discounted_amount',
+        'status',
+        'level',
+        'language',
+        'rating',
+        'created_at',
+    )
+    # change_list_template = "admin/course/course_list.html"
     list_filter_submit = True 
-    list_filter = ('category',
+    list_filter = (
+        'category',
+        'status',
+        'level',
+        'language',
+        'certificate',
+        
         ("created_at", RangeDateTimeFilter),  
         ("updated_at", RangeDateTimeFilter),  
         )
     import_form_class = ImportForm
     export_form_class = ExportForm
+    search_fields = ('title','slug','author__name')
+    ordering = ('-created_at',)
     inlines = (CourseGoalTabularInline,CourseRequirementTabularInline,CourseVideoTabularInline)
+    
 
     def save_model(self, request, obj, form, change):
         # Auto-update slug if title changed or slug is blank
@@ -68,41 +96,69 @@ class BaseUnfoldAdmin(ModelAdmin):
 
 @admin.register(Level)
 class LevelAdmin(BaseUnfoldAdmin):
+    list_display = ('id','name')
     pass
 
 
 @admin.register(CourseRequirement)
 class CourseRequirementAdmin(BaseUnfoldAdmin):
+    list_display = ('id','course','point')
     pass
 
 
 @admin.register(CourseGoal)
 class CourseGoalAdmin(BaseUnfoldAdmin):
+    list_display = ('id','course','point')
     pass
 
 
 @admin.register(CourseLesson)
 class CourseLessonAdmin(BaseUnfoldAdmin):
+    list_display = ('id','name','course')
     pass
 
 
 @admin.register(CourseVideo)
 class CourseVideoAdmin(BaseUnfoldAdmin):
+    list_display = (
+        'id',
+        'title',
+        'course',
+        'lesson',
+        'serial_number',
+        'preview',
+        'time_duration',
+    )
+    list_filter = ('preview',)
     pass
 
 
 @admin.register(EnrolledCourse)
 class EnrolledCourseAdmin(BaseUnfoldAdmin):
+    list_display = (
+        'id',
+        'user',
+        'course',
+        'paid',
+        'enroll_type',
+        'enrolled_at',
+    )
+    list_filter = ('paid', 'enroll_type')
+
     pass
 
 
 @admin.register(Language)
 class LanguageAdmin(BaseUnfoldAdmin):
+    list_display = ('id','language')
     pass
+
 
 
 @admin.register(Payment)
 class PaymentAdmin(BaseUnfoldAdmin):
+    list_display = ('order_id','payment_id','user','course','status','date')
+    list_filter = ('status',)
     pass
 
 

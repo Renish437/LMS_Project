@@ -28,6 +28,7 @@ from django.urls import path,include
 urlpatterns = [
 
     path('admin/', admin.site.urls),
+    path('admin_tools_stats/', include('admin_tools_stats.urls')),
     path("ckeditor/", include("ckeditor_uploader.urls")),
     path('', include('home.urls')),
     path('course/', include('course.urls')),
@@ -35,6 +36,7 @@ urlpatterns = [
 
     # custom accounts routes
     path('accounts/', include('accounts.urls')),
+    
 
     # default auth routes (login, logout, password reset, etc.)
     path('accounts/', include('django.contrib.auth.urls')),
