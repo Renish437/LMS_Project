@@ -13,10 +13,10 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from pathlib import Path
 from .secrets import EMAIL_HOST_USER, EMAIL_HOST_PASSWORD,STRIPE_KEY,STRIPE_SECRET
 from django.utils.translation import gettext_lazy as _
-from django.templatetags.static import static
+# from django.templatetags.static import static
 from django.urls import reverse_lazy
-from course.dashboard import CourseStatusChart
-import os
+
+
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -31,10 +31,10 @@ SECRET_KEY = 'django-insecure-qr9znt*+r52p#p0kk9hvjaty^9@-l=1y)7n=a1p^!l6bmuu0ao
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
+APP_URL = "http://127.0.0.1:8000"
 DEBUG = True 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
-APP_URL = "http://192.168.18.10:8000"
-#APP_URL = "https://holistically-unejective-bradley.ngrok-free.dev"
+ALLOWED_HOSTS = ["localhost", "127.0.0.1"] 
+
 
 
 
@@ -47,8 +47,9 @@ INSTALLED_APPS = [
     'unfold',
     "unfold.contrib.import_export",
     "unfold.contrib.filters",
-    # "django_light",
-    'admin_tools_stats',  # this must be BEFORE 'admin_tools' and 'django.contrib.admin'
+
+    "django_light",
+    'admin_tools_stats',  
     'django_nvd3',
     
     'django.contrib.admin',
@@ -206,6 +207,7 @@ CKEDITOR_CONFIGS = {
     },
 }
 
+
 UNFOLD = {
     "SITE_TITLE": "EduNexus",
     "SITE_HEADER": "EduNexus Admin",
@@ -216,7 +218,7 @@ UNFOLD = {
             "title": _("Goto Website"),
             "link": "http://127.0.0.1:8000",
         },
-        # ...
+      
     ],
       "SITE_SYMBOL": "speed",
       
@@ -465,11 +467,7 @@ UNFOLD = {
 
 
 
-    "DASHBOARD": {
-        "widgets": [
-            CourseStatusChart,
-        ],
-    },
+
 
 
         
